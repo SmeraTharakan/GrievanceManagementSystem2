@@ -1,6 +1,7 @@
 package com.project.Grievance_Management_System.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.project.Grievance_Management_System.entity.Users;
 import com.project.Grievance_Management_System.repository.UsersRepository;
@@ -15,6 +16,8 @@ public class UsersService {
     
     @Autowired
     private UsersRepository usersRepository;
+
+    private BCryptPasswordEncoder encoder=new BCryptPasswordEncoder(12);
 
     public List <Users> getUserByName(String username){
         return usersRepository.findByUsername(username);
@@ -41,6 +44,7 @@ public class UsersService {
     }
 
     public Users createUser(Users user){
+        user.setPassword(encoder.encode(user.getPassword()));
         return usersRepository.save(user);
     }
 
