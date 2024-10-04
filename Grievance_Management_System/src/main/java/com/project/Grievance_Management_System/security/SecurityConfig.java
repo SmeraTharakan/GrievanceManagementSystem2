@@ -26,7 +26,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception{
         http
             .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(request -> request.anyRequest().authenticated())
+            .authorizeHttpRequests(request -> request
+                .requestMatchers("/api/users/create", "/api/users/update").permitAll()
+                .requestMatchers("/api/users/**").hasAnyRole("ADMIN", "SUPERVISOR")
+                .anyRequest().authenticated()
+            )
             .formLogin(Customizer.withDefaults())
             .httpBasic(Customizer.withDefaults())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

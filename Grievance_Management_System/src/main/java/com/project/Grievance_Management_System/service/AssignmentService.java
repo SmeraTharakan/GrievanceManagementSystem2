@@ -1,8 +1,16 @@
 package com.project.Grievance_Management_System.service;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.project.Grievance_Management_System.entity.*;
+import com.project.Grievance_Management_System.exception.AssignmentNotFound;
+import com.project.Grievance_Management_System.exception.GrievanceNotFound;
+import com.project.Grievance_Management_System.exception.UserNotFound;
 import com.project.Grievance_Management_System.repository.AssignmentRepository;
+import com.project.Grievance_Management_System.repository.GrievanceRepository;
+import com.project.Grievance_Management_System.repository.UsersRepository;
+import com.project.Grievance_Management_System.dto.AssignmentDto;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -10,13 +18,13 @@ import java.util.Optional;
 public class AssignmentService {
 
     private final AssignmentRepository assignmentRepository;
-    private final GrievanceService grievanceService;
-    private final UsersService usersService;
+    private final GrievanceRepository grievanceRepository;
+    private final UsersRepository usersRepository;
 
-    public AssignmentService(AssignmentRepository assignmentRepository,GrievanceService grievanceService, UsersService usersService) {
+    public AssignmentService(AssignmentRepository assignmentRepository,GrievanceRepository grievanceRepository, UsersRepository usersRepository) {
         this.assignmentRepository = assignmentRepository;
-        this.grievanceService = grievanceService;
-        this.usersService = usersService;
+        this.grievanceRepository = grievanceRepository;
+        this.usersRepository = usersRepository;
     }
 
     public List <Assignment> getAssignment(){
@@ -26,42 +34,55 @@ public class AssignmentService {
     public Assignment getAssignmentById(Long id){
         Optional <Assignment> assignment=assignmentRepository.findById(id);
         if (assignment.isEmpty()){
-            throw new RuntimeException("Assignment with id"+id+"not found");
+            throw new AssignmentNotFound("Assignment with id"+id+"not found");
         }
         return assignment.get();
     }
 
     public List <Assignment> getByGrievance(Long id){
-        Grievance grievance= grievanceService.getGrievanceById(id);
+        Grievance grievance= grievanceRepository.findById(id).orElseThrow(() -> new GrievanceNotFound("Grievance not found"));
         return assignmentRepository.findByGrievance(grievance);
     }
 
     public List <Assignment> getByAssignedBy(Long id){
-        Users user= usersService.getUserById(id);
+        Users user= usersRepository.findById(id).orElseThrow(() -> new UserNotFound("User not found"));
         return assignmentRepository.findByAssignedBy(user);
     }
 
     public List <Assignment> getByAssignedTo(Long id){
-        Users user= usersService.getUserById(id);
+        Users user= usersRepository.findById(id).orElseThrow(() -> new UserNotFound("Usernot found"));
         return assignmentRepository.findByAssignedTo(user);
     }
 
-    public Assignment createAssignment(Assignment assignment){
-        return assignmentRepository.save(assignment);
+    public Assignment createAssignment(AssignmentDto assignmentDto){
+        
+        Users supervisor = usersRepository.findById(assignmentDto.getSupervisorId()).orElseThrow(() -> new RuntimeException("Supervisor not found"));
+        Users assignee = usersRepository.findById(assignmentDto.getAssigneeId()).orElseThrow(() -> new RuntimeException("Assignee not found"));
+        Grievance grievance = grievanceRepository.findById(assignmentDto.getGrievanceId()).orElseThrow(() -> new RuntimeException("Grievance not found"));
+        Assignment newAssignment = new Assignment();
+        newAssignment.setGrievance(grievance);
+        newAssignment.setAssignedBy(supervisor);
+        newAssignment.setAssignedTo(assignee);
+        return assignmentRepository.save(newAssignment);
+
     }
 
-    public Assignment updateAssignment(Assignment assignment){
-        return assignmentRepository.save(assignment);
+    public Assignment updateAssignment(Long id,AssignmentDto assignmentDto){
+        Assignment Assignment = assignmentRepository.findById(id).orElseThrow(() -> new AssignmentNotFound("Assignment not found"));
+        Assignment.setGrievance(grievanceRepository.findById(assignmentDto.getGrievanceId()).orElseThrow(() -> new RuntimeException("Grievance not found")));
+        Assignment.setAssignedBy(usersRepository.findById(assignmentDto.getSupervisorId()).orElseThrow(() -> new RuntimeException("Supervisor not found")));
+        Assignment.setAssignedTo(usersRepository.findById(assignmentDto.getAssigneeId()).orElseThrow(() -> new RuntimeException("Assignee not found")));
+        return assignmentRepository.save(Assignment);
     }
 
-    public Assignment deleteAssignment(Long id){
+    public ResponseEntity <String> deleteAssignment(Long id){
         Optional <Assignment> assignment= assignmentRepository.findById(id);
         if (assignment.isPresent()){
             assignmentRepository.deleteById(id);
-            return assignment.get();
+            return ResponseEntity.ok("Assignment deleted successfully");
         }
         else{
-            throw new RuntimeException ("Assignment with id "+id+" not found");
+            throw new AssignmentNotFound ("Assignment with id "+id+" not found");
         }
     }
     

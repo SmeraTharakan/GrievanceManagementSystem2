@@ -20,7 +20,7 @@ public class Grievance {
 
     private String title;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name="users_id")
     private Users user;
 

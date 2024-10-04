@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 
 import com.project.Grievance_Management_System.repository.UsersRepository;
 import com.project.Grievance_Management_System.entity.UserPrincipal;
@@ -17,11 +18,9 @@ public class MyUserDetailsService implements UserDetailsService{
     private UsersRepository usersRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException{
-        Users user = usersRepository.findByEmail(email);
-        if (user==null){
-            throw new UsernameNotFoundException("User not found");
-        }
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<Users> userOptional = usersRepository.findByEmail(email);
+        Users user = userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return new UserPrincipal(user);
     }
     

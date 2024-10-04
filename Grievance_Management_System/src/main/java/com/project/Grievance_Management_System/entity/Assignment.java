@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -18,16 +19,16 @@ public class Assignment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name="grievance_id", nullable=false)
     private Grievance  grievance;
 
     @ManyToOne
-    @JoinColumn(name="assigned_by_id", nullable=false)
+    @JoinColumn(name="assigned_by_id", nullable=true)
     private Users assignedBy;
 
     @ManyToOne
-    @JoinColumn(name="assigned_to_id", nullable=false)
+    @JoinColumn(name="assigned_to_id", nullable=true)
     private Users assignedTo;
 
     private String status;
