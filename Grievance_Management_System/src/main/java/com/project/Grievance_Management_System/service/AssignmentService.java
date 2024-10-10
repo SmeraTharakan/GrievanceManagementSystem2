@@ -67,11 +67,15 @@ public class AssignmentService {
 
     }
 
-    public Assignment updateAssignment(Long id,AssignmentDto assignmentDto){
+    public Assignment updateAssignedBy(Long id,Long supervisorId){
         Assignment Assignment = assignmentRepository.findById(id).orElseThrow(() -> new AssignmentNotFound("Assignment not found"));
-        Assignment.setGrievance(grievanceRepository.findById(assignmentDto.getGrievanceId()).orElseThrow(() -> new RuntimeException("Grievance not found")));
-        Assignment.setAssignedBy(usersRepository.findById(assignmentDto.getSupervisorId()).orElseThrow(() -> new RuntimeException("Supervisor not found")));
-        Assignment.setAssignedTo(usersRepository.findById(assignmentDto.getAssigneeId()).orElseThrow(() -> new RuntimeException("Assignee not found")));
+        Assignment.setAssignedBy(usersRepository.findById(supervisorId).orElseThrow(() -> new RuntimeException("Supervisor not found")));
+        return assignmentRepository.save(Assignment);
+    }
+
+    public Assignment updateAssignedTo(Long id,Long assigneeId){
+        Assignment Assignment = assignmentRepository.findById(id).orElseThrow(() -> new AssignmentNotFound("Assignment not found"));
+        Assignment.setAssignedTo(usersRepository.findById(assigneeId).orElseThrow(() -> new RuntimeException("Assignee not found")));
         return assignmentRepository.save(Assignment);
     }
 

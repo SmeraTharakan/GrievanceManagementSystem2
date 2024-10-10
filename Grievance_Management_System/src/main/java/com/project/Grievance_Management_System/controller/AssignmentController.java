@@ -44,7 +44,7 @@ public class AssignmentController {
         return assignmentService.getByGrievance(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISOR')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping ("/assignedby/{id}")
     public List <Assignment> getAssignmentByAssignedBy(@PathVariable Long id){
         return assignmentService.getByAssignedBy(id);
@@ -62,10 +62,16 @@ public class AssignmentController {
         return assignmentService.createAssignment(assignmentDto);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PutMapping ("/updateSupervisor/{id}")
+    public Assignment updateSupervisor(@PathVariable Long id ,@RequestBody Long supervisorId){
+        return assignmentService.updateAssignedBy(id,supervisorId);
+    }
+
     @PreAuthorize("hasAnyRole('SUPERVISOR')")
-    @PutMapping ("/update/{id}")
-    public Assignment updateAssignment(@PathVariable Long id ,@RequestBody AssignmentDto assignmentDto){
-        return assignmentService.updateAssignment(id,assignmentDto);
+    @PutMapping ("/updateAssignee/{id}")
+    public Assignment updateAssignee(@PathVariable Long id ,@RequestBody Long assigneeId){
+        return assignmentService.updateAssignedTo(id,assigneeId);
     }
 
     @PreAuthorize("hasAnyRole('SUPERVISOR')")
