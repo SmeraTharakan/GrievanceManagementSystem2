@@ -59,9 +59,14 @@ public class GrievanceController {
         return grievanceService.createGrievance(grievanceDto);
     }
 
-    @PutMapping ("/update/{id}")
-    public Grievance updateGrievance(@PathVariable Long id ,@RequestBody GrievanceDto grievanceDto){
-        return grievanceService.updateGrievance(id,grievanceDto);
+    @PutMapping ("/updateTitle/{id}")
+    public Grievance updateGrievanceTitle(@PathVariable Long id ,@RequestBody String title){
+        return grievanceService.updateGrievanceTitle(id,title);
+    }
+
+    @PutMapping ("/updateDescription/{id}")
+    public Grievance updateGrievanceDescription(@PathVariable Long id ,@RequestBody String description){
+        return grievanceService.updateGrievanceDescription(id,description);
     }
 
     @PreAuthorize("hasAnyRole('SUPERVISOR')")

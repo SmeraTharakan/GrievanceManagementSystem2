@@ -56,7 +56,7 @@ public class GrievanceService {
             Grievance newGrievance = new Grievance();
             newGrievance.setTitle(grievanceDto.getTitle());
             newGrievance.setDescription(grievanceDto.getDescription());
-            newGrievance.setCategory(grievanceDto.getCategory());
+            newGrievance.setCategory(null);
             newGrievance.setStatus(grievanceDto.getStatus());
             newGrievance.setUser(user);
             return grievanceRepository.save(newGrievance);
@@ -67,20 +67,16 @@ public class GrievanceService {
         
     }
 
-    public Grievance updateGrievance(Long id,GrievanceDto grievanceDto){
-        try {
+    public Grievance updateGrievanceTitle(Long id,String title){
             Grievance Grievance = grievanceRepository.findById(id).orElseThrow(() -> new GrievanceNotFound("Grievance not found"));
-            Users user = usersRepository.findById(grievanceDto.getUserId()).orElseThrow(() -> new UserNotFound("User not found"));
-            Grievance.setTitle(grievanceDto.getTitle());
-            Grievance.setDescription(grievanceDto.getDescription());
-            Grievance.setCategory(grievanceDto.getCategory());
-            Grievance.setStatus(grievanceDto.getStatus());
-            Grievance.setUser(user);
+            Grievance.setTitle(title);
             return grievanceRepository.save(Grievance);
+    }
 
-        } catch (UserNotFound e){
-            throw new UserNotFound("User with id" + grievanceDto.getUserId() +"Not Found");
-        }
+    public Grievance updateGrievanceDescription(Long id,String description){
+            Grievance Grievance = grievanceRepository.findById(id).orElseThrow(() -> new GrievanceNotFound("Grievance not found"));
+            Grievance.setDescription(description);
+            return grievanceRepository.save(Grievance);
     }
 
     public Grievance updateGrievanceCategory(Long id, String category){
