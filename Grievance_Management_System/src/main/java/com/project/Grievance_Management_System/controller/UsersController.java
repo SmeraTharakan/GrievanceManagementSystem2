@@ -71,9 +71,20 @@ public class UsersController {
         return usersService.createEmployee(userDto);
     }
 
-    @PutMapping ("/update/{id}")
-    public Users updateUsers(@PathVariable Long id, @RequestBody UserDto userDto){
-        return usersService.updateUser(id,userDto);
+    @PutMapping ("/updateUsername/{id}")
+    public Users updateUsername(@PathVariable Long id, @RequestBody String username){
+        return usersService.updateUsername(id,username);
+    }
+
+    @PutMapping ("/updatePassword/{id}")
+    public Users updatePassword(@PathVariable Long id, @RequestBody String password){
+        return usersService.updateUserpassword(id,password);
+    }
+
+    @PutMapping ("/updateRole/{id}")
+    public Users updateRole(@PathVariable Long id, @RequestBody String role){
+        Role userRole = Role.valueOf(role);
+        return usersService.updateRole(id,userRole);
     }
 
     @DeleteMapping ("/delete/{id}")

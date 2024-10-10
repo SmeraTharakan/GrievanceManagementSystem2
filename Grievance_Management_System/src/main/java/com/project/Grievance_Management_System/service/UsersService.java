@@ -77,13 +77,26 @@ public class UsersService {
         return usersRepository.save(newUser);
     }
 
-    public Users updateUser(Long id,UserDto userDto){
+    public Users updateUsername(Long id,String username){
         
         Users User = usersRepository.findById(id).orElseThrow(() -> new UserNotFound("User not found"));
-        User.setUsername(userDto.getUsername());
-        User.setEmail(userDto.getEmail());  
-        User.setPassword(encoder.encode(userDto.getPassword()));
-        User.setRole(userDto.getRole());
+        User.setUsername(username);
+        return usersRepository.save(User);
+      
+    }
+
+    public Users updateUserpassword(Long id,String password){
+        
+        Users User = usersRepository.findById(id).orElseThrow(() -> new UserNotFound("User not found"));
+        User.setPassword(encoder.encode(password));
+        return usersRepository.save(User);
+      
+    }
+
+    public Users updateRole(Long id,Role role){
+        
+        Users User = usersRepository.findById(id).orElseThrow(() -> new UserNotFound("User not found"));
+        User.setRole(role);
         return usersRepository.save(User);
       
     }
