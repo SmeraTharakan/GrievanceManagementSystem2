@@ -19,16 +19,16 @@ public class Assignment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name="grievance_id", nullable=false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="grievance_id", nullable=false,foreignKey = @ForeignKey(name = "fk_grievance_assignment"))
     private Grievance  grievance;
 
     @ManyToOne
-    @JoinColumn(name="assigned_by_id", nullable=true)
+    @JoinColumn(name="assigned_by_id", nullable=true,foreignKey = @ForeignKey(name = "fk_assigned_by_user"))
     private Users assignedBy;
 
     @ManyToOne
-    @JoinColumn(name="assigned_to_id", nullable=true)
+    @JoinColumn(name="assigned_to_id", nullable=true,foreignKey = @ForeignKey(name = "fk_assigned_to_user"))
     private Users assignedTo;
 
     private String status;

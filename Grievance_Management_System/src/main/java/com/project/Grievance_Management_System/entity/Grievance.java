@@ -20,8 +20,8 @@ public class Grievance {
 
     private String title;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name="users_id")
+    @ManyToOne
+    @JoinColumn(name="users_id" ,nullable = true, foreignKey = @ForeignKey(name = "fk_user_grievance"))
     private Users user;
 
     @Column(columnDefinition = "TEXT")
@@ -39,12 +39,6 @@ public class Grievance {
         this.createdAt=LocalDateTime.now();
         this.updatedAt=LocalDateTime.now();
         this.status="Grievance submitted";
-    }
-
-    @PreUpdate
-    protected void onUpdate(){
-        this.updatedAt=LocalDateTime.now();
-        this.status="Grievance updated";
     }
 
     
