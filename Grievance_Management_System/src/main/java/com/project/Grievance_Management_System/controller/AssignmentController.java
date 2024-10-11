@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.Grievance_Management_System.entity.Assignment;
 import com.project.Grievance_Management_System.dto.AssignmentDto;
 import com.project.Grievance_Management_System.service.AssignmentService;
 import java.util.List;
@@ -26,51 +25,51 @@ public class AssignmentController {
         this.assignmentService=assignmentService;
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISOR','ASSIGNEE')")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISOR')")
     @GetMapping ("")
-    public List <Assignment> getAssignment(){
+    public ResponseEntity<List<AssignmentDto>> getAssignment(){
         return assignmentService.getAssignment();
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERVISOR','ASSIGNEE')")
     @GetMapping ("/{id}")
-    public Assignment getAssignmentById(@PathVariable Long id){
+    public ResponseEntity<AssignmentDto> getAssignmentById(@PathVariable Long id){
         return assignmentService.getAssignmentById(id);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERVISOR','ASSIGNEE')")
     @GetMapping ("/grievance/{id}")
-    public List <Assignment> getAssignmentByGrievance(@PathVariable Long id){
+    public ResponseEntity<List<AssignmentDto>> getAssignmentByGrievance(@PathVariable Long id){
         return assignmentService.getByGrievance(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISOR')")
     @GetMapping ("/assignedby/{id}")
-    public List <Assignment> getAssignmentByAssignedBy(@PathVariable Long id){
+    public ResponseEntity<List<AssignmentDto>> getAssignmentByAssignedBy(@PathVariable Long id){
         return assignmentService.getByAssignedBy(id);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISOR')")
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISOR','ASSIGNEE')")
     @GetMapping ("/assignedto/{id}")
-    public List <Assignment> getAssignmentByAssignedTo(@PathVariable Long id){
+    public ResponseEntity<List<AssignmentDto>> getAssignmentByAssignedTo(@PathVariable Long id){
         return assignmentService.getByAssignedTo(id);
     }
     
     @PreAuthorize("hasAnyRole('SUPERVISOR')")
     @PostMapping ("/create")
-    public Assignment createAssignment(@RequestBody AssignmentDto assignmentDto){
+    public ResponseEntity<String> createAssignment(@RequestBody AssignmentDto assignmentDto){
         return assignmentService.createAssignment(assignmentDto);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping ("/updateSupervisor/{id}")
-    public Assignment updateSupervisor(@PathVariable Long id ,@RequestBody Long supervisorId){
+    public ResponseEntity<String> updateSupervisor(@PathVariable Long id ,@RequestBody Long supervisorId){
         return assignmentService.updateAssignedBy(id,supervisorId);
     }
 
     @PreAuthorize("hasAnyRole('SUPERVISOR')")
     @PutMapping ("/updateAssignee/{id}")
-    public Assignment updateAssignee(@PathVariable Long id ,@RequestBody Long assigneeId){
+    public ResponseEntity<String> updateAssignee(@PathVariable Long id ,@RequestBody Long assigneeId){
         return assignmentService.updateAssignedTo(id,assigneeId);
     }
 

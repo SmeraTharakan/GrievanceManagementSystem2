@@ -9,6 +9,7 @@ import com.project.Grievance_Management_System.dto.UserDto;
 import com.project.Grievance_Management_System.entity.Users;
 import com.project.Grievance_Management_System.repository.UsersRepository;
 import com.project.Grievance_Management_System.entity.Users.Role;
+import com.project.Grievance_Management_System.converter.UDtoConverter;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,33 +23,41 @@ public class UsersService {
     @Autowired
     private UsersRepository usersRepository;
 
+    @Autowired
+    private UDtoConverter converter; 
+
     private BCryptPasswordEncoder encoder=new BCryptPasswordEncoder(12);
 
 
 
-    public List <Users> getUserByName(String username){
-        return usersRepository.findByUsername(username);
+    public ResponseEntity<List<UserDto>> getUserByName(String username){
+        List <UserDto> userDtoList= converter.userToDto(usersRepository.findByUsername(username));
+        return ResponseEntity.ok(userDtoList);
     }
 
-    public List <Users> getUserByRole(Role role){
-        return usersRepository.findByRole(role);
+    public ResponseEntity<List<UserDto>> getUserByRole(Role role){    
+        List <UserDto> userDtoList= converter.userToDto(usersRepository.findByRole(role));
+        return ResponseEntity.ok(userDtoList);
     }
 
-    public Users getUserByEmail(String email){
-        return usersRepository.findByEmail(email)
-        .orElseThrow(() -> new UserNotFound("User not found with email: " + email));
+    public ResponseEntity<UserDto> getUserByEmail(String email){
+        Users user=usersRepository.findByEmail(email).orElseThrow(() -> new UserNotFound("User not found with email: " + email));
+        UserDto userDto = converter.userToDto(user);
+        return ResponseEntity.ok(userDto);
     }
 
-    public Users getUserById(Long id){
-        return usersRepository.findById(id)
-        .orElseThrow(() -> new UserNotFound("User not found with id: " + id));
+    public ResponseEntity<UserDto> getUserById(Long id){
+        Users user=usersRepository.findById(id).orElseThrow(() -> new UserNotFound("User not found with id: " + id));
+        UserDto userDto = converter.userToDto(user);
+        return ResponseEntity.ok(userDto);
     }
 
-    public List <Users> getUsers(){
-        return usersRepository.findAll();
+    public ResponseEntity<List<UserDto>> getUsers(){    
+        List <UserDto> userDtoList= converter.userToDto(usersRepository.findAll());
+        return ResponseEntity.ok(userDtoList);
     }
 
-    public Users createUser(UserDto userDto){
+    public ResponseEntity<String> createUser(UserDto userDto){
         if (usersRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new UserExists("User already exists with email: " + userDto.getEmail());
         }
@@ -58,10 +67,11 @@ public class UsersService {
         newUser.setEmail(userDto.getEmail());  
         newUser.setPassword(encoder.encode(userDto.getPassword()));
         newUser.setRole(roleUser);
-        return usersRepository.save(newUser);
+        usersRepository.save(newUser);
+        return ResponseEntity.ok("User Created successfully");
     }
 
-    public Users createEmployee(UserDto userDto){
+    public ResponseEntity<String> createEmployee(UserDto userDto){
         if (usersRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new UserExists("User already exists with email: " + userDto.getEmail());
         }
@@ -74,30 +84,34 @@ public class UsersService {
         newUser.setEmail(userDto.getEmail());  
         newUser.setPassword(encoder.encode(userDto.getPassword()));
         newUser.setRole(userDto.getRole());
-        return usersRepository.save(newUser);
+        usersRepository.save(newUser);
+        return ResponseEntity.ok("Employee Created successfully");
     }
 
-    public Users updateUsername(Long id,String username){
+    public ResponseEntity<String> updateUsername(Long id,String username){
         
         Users User = usersRepository.findById(id).orElseThrow(() -> new UserNotFound("User not found"));
         User.setUsername(username);
-        return usersRepository.save(User);
+        usersRepository.save(User);
+        return ResponseEntity.ok("Username updated successfully");
       
     }
 
-    public Users updateUserpassword(Long id,String password){
+    public ResponseEntity<String> updateUserpassword(Long id,String password){
         
         Users User = usersRepository.findById(id).orElseThrow(() -> new UserNotFound("User not found"));
         User.setPassword(encoder.encode(password));
-        return usersRepository.save(User);
+        usersRepository.save(User);
+        return ResponseEntity.ok("Password updated successfully");
       
     }
 
-    public Users updateRole(Long id,Role role){
+    public ResponseEntity<String> updateRole(Long id,Role role){
         
         Users User = usersRepository.findById(id).orElseThrow(() -> new UserNotFound("User not found"));
         User.setRole(role);
-        return usersRepository.save(User);
+        usersRepository.save(User);
+        return ResponseEntity.ok("Role updated successfully");
       
     }
 

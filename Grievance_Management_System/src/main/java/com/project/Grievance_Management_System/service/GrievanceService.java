@@ -1,8 +1,10 @@
 package com.project.Grievance_Management_System.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.project.Grievance_Management_System.converter.GDtoConverter;
 import com.project.Grievance_Management_System.dto.GrievanceDto;
 import com.project.Grievance_Management_System.entity.Grievance;
 import com.project.Grievance_Management_System.entity.Users;
@@ -20,37 +22,42 @@ public class GrievanceService {
     private final GrievanceRepository grievanceRepository;
     private final UsersRepository usersRepository;
 
+    @Autowired
+    private GDtoConverter converter;
+
     public GrievanceService(GrievanceRepository grievanceRepository, UsersRepository usersRepository){
         this.usersRepository=usersRepository;
         this.grievanceRepository=grievanceRepository;
     }
 
-    public List <Grievance> getGrievances(){
-        return grievanceRepository.findAll();
+    public ResponseEntity<List<GrievanceDto>> getGrievances(){   
+        List <GrievanceDto> grievanceDtoList= converter.GToDto(grievanceRepository.findAll());
+        return ResponseEntity.ok(grievanceDtoList);
     }
     
-    public Grievance getGrievanceById(Long id){
-        Optional <Grievance> grievance= grievanceRepository.findById(id);
-        if(grievance.isEmpty()){
-            throw new GrievanceNotFound("Grievance with id"+id +"not found");
-        }
-        return grievance.get();
+    public ResponseEntity<GrievanceDto> getGrievanceById(Long id){
+        Grievance grievance= grievanceRepository.findById(id).orElseThrow(() -> new GrievanceNotFound("Grievance not found with id: " + id));
+        GrievanceDto grievanceDto = converter.GToDto(grievance);
+        return ResponseEntity.ok(grievanceDto);
     }
 
-    public List <Grievance> getGrievancesByCategory(String category){
-        return grievanceRepository.findByCategory(category);
+    public ResponseEntity<List<GrievanceDto>> getGrievancesByCategory(String category){
+        List <GrievanceDto> grievanceDtoList= converter.GToDto(grievanceRepository.findByCategory(category));
+        return ResponseEntity.ok(grievanceDtoList);   
     }
 
-    public List <Grievance> getGrievancesByStatus(String status){
-        return grievanceRepository.findByStatus(status);
+    public ResponseEntity<List<GrievanceDto>> getGrievancesByStatus(String status){
+        List <GrievanceDto> grievanceDtoList= converter.GToDto(grievanceRepository.findByStatus(status));
+        return ResponseEntity.ok(grievanceDtoList);
     }
 
-    public List <Grievance> getGrievancesByUser(long id){
+    public ResponseEntity<List<GrievanceDto>> getGrievancesByUser(long id){
         Users user=usersRepository.findById(id).orElseThrow(() -> new UserNotFound("User not found"));
-        return grievanceRepository.findByUser(user);
+        List <GrievanceDto> grievanceDtoList= converter.GToDto(grievanceRepository.findByUser(user));
+        return ResponseEntity.ok(grievanceDtoList);
     }
 
-    public Grievance createGrievance(GrievanceDto grievanceDto){
+    public ResponseEntity <String> createGrievance(GrievanceDto grievanceDto){
         try {
             Users user = usersRepository.findById(grievanceDto.getUserId()).orElseThrow(() -> new UserNotFound("User not found"));
             Grievance newGrievance = new Grievance();
@@ -59,7 +66,8 @@ public class GrievanceService {
             newGrievance.setCategory(null);
             newGrievance.setStatus(grievanceDto.getStatus());
             newGrievance.setUser(user);
-            return grievanceRepository.save(newGrievance);
+            grievanceRepository.save(newGrievance);
+            return ResponseEntity.ok("Grievance created successfully");
 
         } catch (UserNotFound e){
             throw new UserNotFound("User with id" + grievanceDto.getUserId() +"Not Found");
@@ -67,34 +75,38 @@ public class GrievanceService {
         
     }
 
-    public Grievance updateGrievanceTitle(Long id,String title){
+    public ResponseEntity <String> updateGrievanceTitle(Long id,String title){
             Grievance Grievance = grievanceRepository.findById(id).orElseThrow(() -> new GrievanceNotFound("Grievance not found"));
             Grievance.setTitle(title);
-            return grievanceRepository.save(Grievance);
+            grievanceRepository.save(Grievance);
+            return ResponseEntity.ok("Grievance title updated successfully");
     }
 
-    public Grievance updateGrievanceDescription(Long id,String description){
+    public ResponseEntity <String> updateGrievanceDescription(Long id,String description){
             Grievance Grievance = grievanceRepository.findById(id).orElseThrow(() -> new GrievanceNotFound("Grievance not found"));
             Grievance.setDescription(description);
-            return grievanceRepository.save(Grievance);
+            grievanceRepository.save(Grievance);
+            return ResponseEntity.ok("Grievance description updated successfully");
     }
 
-    public Grievance updateGrievanceCategory(Long id, String category){
+    public ResponseEntity <String> updateGrievanceCategory(Long id, String category){
         try {
             Grievance grievance = grievanceRepository.findById(id).orElseThrow(() -> new GrievanceNotFound("Grievance not found"));
             grievance.setCategory(category);
-            return grievanceRepository.save(grievance);
+            grievanceRepository.save(grievance);
+            return ResponseEntity.ok("Grievance category updated successfully");
 
         } catch (GrievanceNotFound e){
             throw new GrievanceNotFound("Grievance with id" + id +"Not Found");
         }
     }
 
-    public Grievance updateGrievanceStatus(Long id, String status){
+    public ResponseEntity <String> updateGrievanceStatus(Long id, String status){
         try {
             Grievance grievance = grievanceRepository.findById(id).orElseThrow(() -> new GrievanceNotFound("Grievance not found"));
             grievance.setStatus(status);
-            return grievanceRepository.save(grievance);
+            grievanceRepository.save(grievance);
+            return ResponseEntity.ok("Grievance status updated successfully");
 
         } catch (GrievanceNotFound e){
             throw new GrievanceNotFound("Grievance with id" + id +"Not Found");

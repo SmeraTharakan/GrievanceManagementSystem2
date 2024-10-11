@@ -1,6 +1,5 @@
 package com.project.Grievance_Management_System.controller;
 
-import com.project.Grievance_Management_System.entity.Grievance;
 import com.project.Grievance_Management_System.service.GrievanceService;
 import com.project.Grievance_Management_System.dto.GrievanceDto;
 import java.util.List;
@@ -27,66 +26,63 @@ public class GrievanceController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISOR')")
     @GetMapping ("")
-    public List <Grievance> getGrievances(){
+    public ResponseEntity<List<GrievanceDto>> getGrievances(){
         return grievanceService.getGrievances();
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISOR')")
     @GetMapping ("/{id}")
-    public Grievance getGrievanceById(@PathVariable Long id){
+    public ResponseEntity<GrievanceDto> getGrievanceById(@PathVariable Long id){
         return grievanceService.getGrievanceById(id);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISOR')")
     @GetMapping ("/category/{category}")
-    public List <Grievance> getGrievanceByCategory(@PathVariable String category){
+    public ResponseEntity<List<GrievanceDto>> getGrievanceByCategory(@PathVariable String category){
         return grievanceService.getGrievancesByCategory(category);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISOR')")
     @GetMapping ("/status/{status}")
-    public List <Grievance> getGrievanceByStatus(@PathVariable String status){
+    public ResponseEntity<List<GrievanceDto>> getGrievanceByStatus(@PathVariable String status){
         return grievanceService.getGrievancesByStatus(status);
     }
 
     @GetMapping ("/user/{id}")
-    public List <Grievance> getGrievanceByUser(@PathVariable Long id){
+    public ResponseEntity<List<GrievanceDto>> getGrievanceByUser(@PathVariable Long id){
         return grievanceService.getGrievancesByUser(id);
     }
 
     @PostMapping ("/create")
-    public Grievance createGrievance(@RequestBody GrievanceDto grievanceDto){
+    public ResponseEntity <String> createGrievance(@RequestBody GrievanceDto grievanceDto){
         return grievanceService.createGrievance(grievanceDto);
     }
 
     @PutMapping ("/updateTitle/{id}")
-    public Grievance updateGrievanceTitle(@PathVariable Long id ,@RequestBody String title){
+    public ResponseEntity <String> updateGrievanceTitle(@PathVariable Long id ,@RequestBody String title){
         return grievanceService.updateGrievanceTitle(id,title);
     }
 
     @PutMapping ("/updateDescription/{id}")
-    public Grievance updateGrievanceDescription(@PathVariable Long id ,@RequestBody String description){
+    public ResponseEntity <String> updateGrievanceDescription(@PathVariable Long id ,@RequestBody String description){
         return grievanceService.updateGrievanceDescription(id,description);
     }
 
     @PreAuthorize("hasAnyRole('SUPERVISOR')")
     @PutMapping ("/updateCategory/{id}")
-    public Grievance updateGrievanceCategory(@PathVariable Long id ,@RequestBody String category){
+    public ResponseEntity <String> updateGrievanceCategory(@PathVariable Long id ,@RequestBody String category){
         return grievanceService.updateGrievanceCategory(id,category);
     }
 
     @PreAuthorize("hasAnyRole('ASSIGNEE', 'SUPERVISOR')")
     @PutMapping ("/updateStatus/{id}")
-    public Grievance updateGrievanceStatus(@PathVariable Long id ,@RequestBody String status){
+    public ResponseEntity <String> updateGrievanceStatus(@PathVariable Long id ,@RequestBody String status){
         return grievanceService.updateGrievanceStatus(id,status);
     }
 
     @DeleteMapping ("/delete/{id}")
     public ResponseEntity <String> deleteGrievance(@PathVariable Long id){
         return grievanceService.deleteGrievance(id);
-    }
-
-
-    
+    } 
     
 }

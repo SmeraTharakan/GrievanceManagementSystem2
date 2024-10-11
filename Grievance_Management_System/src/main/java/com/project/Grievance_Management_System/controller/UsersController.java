@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.project.Grievance_Management_System.entity.Users;
 import com.project.Grievance_Management_System.service.UsersService;
 
 
@@ -32,57 +31,58 @@ public class UsersController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISOR')")
     @GetMapping ("")
-    public List <Users> getUsers(){
+    public ResponseEntity <List<UserDto>> getUsers(){
         return usersService.getUsers();
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISOR')")
     @GetMapping ("/{id}")
-    public Users getUserById(@PathVariable Long id){
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id){
         return usersService.getUserById(id);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISOR')")
     @GetMapping ("/username/{username}")
-    public List <Users> getUserByName(@PathVariable String username){
+    public ResponseEntity<List<UserDto>> getUserByName(@PathVariable String username){
         return usersService.getUserByName(username);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISOR')")
     @GetMapping ("/role/{role}")
-    public List <Users> getUserByRole(@PathVariable Role role){
+    public ResponseEntity<List<UserDto>> getUserByRole(@PathVariable Role role){
         return usersService.getUserByRole(role);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISOR')")
     @GetMapping ("/email/{email}")
-    public Users getUserByEmail(@PathVariable String email){
+    public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email){
         return usersService.getUserByEmail(email);
     }
 
     @PostMapping ("/create")
-    public Users createUsers(@RequestBody UserDto userDto){
+    public ResponseEntity<String> createUsers(@RequestBody UserDto userDto){
         return usersService.createUser(userDto);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISOR')")
     @PostMapping ("/createEmployee")
-    public Users createUserEmployee(@RequestBody UserDto userDto){
+    public ResponseEntity<String> createUserEmployee(@RequestBody UserDto userDto){
         return usersService.createEmployee(userDto);
     }
 
     @PutMapping ("/updateUsername/{id}")
-    public Users updateUsername(@PathVariable Long id, @RequestBody String username){
+    public ResponseEntity<String> updateUsername(@PathVariable Long id, @RequestBody String username){
         return usersService.updateUsername(id,username);
     }
 
     @PutMapping ("/updatePassword/{id}")
-    public Users updatePassword(@PathVariable Long id, @RequestBody String password){
+    public ResponseEntity<String> updatePassword(@PathVariable Long id, @RequestBody String password){
         return usersService.updateUserpassword(id,password);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISOR')")
     @PutMapping ("/updateRole/{id}")
-    public Users updateRole(@PathVariable Long id, @RequestBody String role){
+    public ResponseEntity<String> updateRole(@PathVariable Long id, @RequestBody String role){
         Role userRole = Role.valueOf(role);
         return usersService.updateRole(id,userRole);
     }
