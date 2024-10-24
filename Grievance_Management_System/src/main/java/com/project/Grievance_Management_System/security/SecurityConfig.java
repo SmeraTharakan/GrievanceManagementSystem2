@@ -4,9 +4,11 @@ package com.project.Grievance_Management_System.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -27,8 +29,8 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(request -> request
-                .requestMatchers("/api/users/create", "/api/users/update").permitAll()
-                .requestMatchers("/api/users/**").hasAnyRole("ADMIN", "SUPERVISOR")
+                .requestMatchers("/api/auth/signup", "/api/auth/login").permitAll()
+                //.requestMatchers("/api/users/**").hasAnyRole("ADMIN", "SUPERVISOR")
                 .anyRequest().authenticated()
             )
             .formLogin(Customizer.withDefaults())
@@ -49,5 +51,11 @@ public class SecurityConfig {
         provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
         provider.setUserDetailsService(userDetailsService);
         return provider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager(); 
+
     }
 }
