@@ -2,9 +2,15 @@ package com.project.Grievance_Management_System.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import com.project.Grievance_Management_System.dto.LoginDto;
 import com.project.Grievance_Management_System.dto.UserDto;
 import com.project.Grievance_Management_System.entity.Users;
 import com.project.Grievance_Management_System.repository.UsersRepository;
@@ -25,6 +31,12 @@ public class UsersService {
 
     @Autowired
     private UDtoConverter converter; 
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtService jwtService;
 
     private BCryptPasswordEncoder encoder=new BCryptPasswordEncoder(12);
 
@@ -128,6 +140,15 @@ public class UsersService {
         }
     }
 
+    public String loginUser (@RequestBody LoginDto loginDto){
+        Authentication authentication = authenticationManager.authenticate (new UsernamePasswordAuthenticationToken(loginDto.getEmail(),loginDto.getPassword()));
+        //SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (authentication.isAuthenticated()) {
+            return jwtService.generateToken(loginDto.getEmail());
+        } else {
+            return "fail";
+        }
+    }
 
 
 }
