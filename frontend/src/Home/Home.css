@@ -1,0 +1,20 @@
+#welcome-flex {
+    height: 728px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#img-home {
+    width: 654px;
+    height: 480px;
+}
+#welcome {
+    margin-left: 250px;
+    width: 600px;
+    text-align: center;
+
+}
+
+#signup {
+    margin-top: 50px;
+}
