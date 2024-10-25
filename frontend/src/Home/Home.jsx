@@ -1,5 +1,5 @@
 import React from 'react'
-import Cover from '../assets/cover2.png'
+import Cover from '../assets/cover.png'
 import './Home.css'
 
 const Home = () => {
