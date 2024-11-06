@@ -1,6 +1,10 @@
 package com.project.Grievance_Management_System.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +35,15 @@ public class AuthController {
     }
 
     @PostMapping ("/login")
-    public String loginUser (@RequestBody LoginDto loginDto){
-        return usersService.loginUser(loginDto);
+    public ResponseEntity<?> loginUser (@RequestBody LoginDto loginDto){
+        String token = usersService.loginUser(loginDto);  
+        if (token != null) {
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
     }
 
 

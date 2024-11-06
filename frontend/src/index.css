@@ -51,18 +51,23 @@ p{
 }
 
 button {
-  border-radius: 8px;
+  border-radius: 50px;
   border: 1px solid transparent;
+  width: 220px;
+  height: 59px;
   padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+  font-size: 19px;
+  font-weight: 700;
   font-family: inherit;
-  background-color: #d6bffe;
+  background-color: #af44f2;
+  color: #fff;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #af44f2;
+  background: #d6bffe;
+  
+  
 }
 button:focus,
 button:focus-visible {
