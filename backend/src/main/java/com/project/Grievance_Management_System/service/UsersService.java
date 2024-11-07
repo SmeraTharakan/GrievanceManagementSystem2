@@ -10,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.project.Grievance_Management_System.dto.LoginDto;
+import com.project.Grievance_Management_System.dto.AuthRequest;
 import com.project.Grievance_Management_System.dto.UserDto;
 import com.project.Grievance_Management_System.entity.Users;
 import com.project.Grievance_Management_System.repository.UsersRepository;
@@ -140,7 +140,7 @@ public class UsersService {
         }
     }
 
-    public String loginUser (@RequestBody LoginDto loginDto){
+    public String loginUser (@RequestBody AuthRequest loginDto){
         Authentication authentication = authenticationManager.authenticate (new UsernamePasswordAuthenticationToken(loginDto.getEmail(),loginDto.getPassword()));
         //SecurityContextHolder.getContext().setAuthentication(authentication);
         if (authentication.isAuthenticated()) {
