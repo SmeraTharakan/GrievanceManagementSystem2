@@ -3,11 +3,12 @@ import { useState, useEffect } from 'react';
 import api from '../Api/api';
 
 const Grievance = () => {
+    const userId = localStorage.getItem("userId");
     const [grievances,setGrievances] =useState([])
-    const listGrievance = ()=> api.get('api/grievances/user/602');
+    const listGrievance = ()=> api.get(`api/grievances/user/${userId}`);
     useEffect(()=> {
         listGrievance().then((response) =>{
-            setGrievances(response.data)
+            setGrievances(response.data || [])
             console.log(response.data)
         }).catch(error => {
             console.error(error);

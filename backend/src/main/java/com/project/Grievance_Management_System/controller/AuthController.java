@@ -29,8 +29,15 @@ public class AuthController {
     private UsersRepository usersRepository;
 
     @PostMapping ("/signup")
-    public ResponseEntity<String> createUsers(@RequestBody UserDto userDto){
-        return usersService.createUser(userDto);
+    public ResponseEntity<?> createUsers(@RequestBody UserDto userDto){
+        usersService.createUser(userDto);
+        String token = usersService.loginUser(userDto.getEmail(),userDto.getPassword());  
+        if (token != null) {
+            Users user=usersRepository.findByEmail(userDto.getEmail()).orElseThrow(() -> new UserNotFound("User not found with email: " + userDto.getEmail()));
+            return ResponseEntity.ok(new AuthResponse(token,user.getId(),user.getUsername(),user.getRole()));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISOR')")
@@ -41,7 +48,7 @@ public class AuthController {
 
     @PostMapping ("/login")
     public ResponseEntity<?> loginUser (@RequestBody AuthRequest loginDto){
-        String token = usersService.loginUser(loginDto);  
+        String token = usersService.loginUser(loginDto.getEmail(),loginDto.getPassword());  
         if (token != null) {
             Users user=usersRepository.findByEmail(loginDto.getEmail()).orElseThrow(() -> new UserNotFound("User not found with email: " + loginDto.getEmail()));
             return ResponseEntity.ok(new AuthResponse(token,user.getId(),user.getUsername(),user.getRole()));

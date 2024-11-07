@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../Auth/AuthProvider';
 import api from '../Api/api.jsx';
 import './Login.css';
 import user_icon from '../assets/person.png';
@@ -7,6 +8,7 @@ import password_icon from '../assets/password.png';
 import email_icon from '../assets/email.png';
 
 const Login = () => {
+    const { login ,logout} = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const [email, setEmail] = useState('');
@@ -24,24 +26,15 @@ const Login = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await api.post('api/auth/login', { email,password });
-            const token = response.data.token;
-            localStorage.setItem('jwtToken', token);
-            console.log("Login successful:", token);
-            navigate('/grievance'); 
-        } catch (err) {
+            await login(email, password);
+        } catch (error) {
             setError("Invalid credentials. Please try again.");
-            console.log(err);
         }
     };
 
     const handleSignUp = async () => {
         try {
-            const response = await api.post('api/auth/signup', { username:name, email:email,password:password });
-            const token = response.data.token;
-            localStorage.setItem('jwtToken', token);
-            console.log("Signup successful:", token);
-            navigate('/'); 
+            await signup(name,email, password);
         } catch (err) {
             setError("Signup failed. Please try again.");
             console.log(err);
@@ -54,6 +47,7 @@ const Login = () => {
                 <div className='text'>{action === 'login' ? 'Log In' : 'Sign Up'}</div>
                 <div className='underline'></div>
             </div>
+            
             <div className='inputs'>
                 {action === 'signup' && (
                     <div className='input'>

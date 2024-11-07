@@ -8,9 +8,9 @@ import org.springframework.security.core.Authentication;
 //import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+//import org.springframework.web.bind.annotation.RequestBody;
 
-import com.project.Grievance_Management_System.dto.AuthRequest;
+//import com.project.Grievance_Management_System.dto.AuthRequest;
 import com.project.Grievance_Management_System.dto.UserDto;
 import com.project.Grievance_Management_System.entity.Users;
 import com.project.Grievance_Management_System.repository.UsersRepository;
@@ -140,11 +140,11 @@ public class UsersService {
         }
     }
 
-    public String loginUser (@RequestBody AuthRequest loginDto){
-        Authentication authentication = authenticationManager.authenticate (new UsernamePasswordAuthenticationToken(loginDto.getEmail(),loginDto.getPassword()));
+    public String loginUser (String email,String password){
+        Authentication authentication = authenticationManager.authenticate (new UsernamePasswordAuthenticationToken(email,password));
         //SecurityContextHolder.getContext().setAuthentication(authentication);
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(loginDto.getEmail());
+            return jwtService.generateToken(email);
         } else {
             return "fail";
         }
