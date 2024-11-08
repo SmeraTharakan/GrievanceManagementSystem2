@@ -24,8 +24,15 @@ const Grievance = () => {
 
     },[refresh])
 
-    const handleDelete = (id) => {
-      console.log("Delete grievance");
+    const handleDelete = async (id) => {
+      try {
+        const response = await api.delete(`/api/grievances/delete/${id}`,);
+        console.log('Grievance deleted successfully',response.data);
+
+        setRefresh(!refresh);
+    } catch (error) {
+        console.error('Error deleting grievance:', error);
+    }
     };
 
     const handleUpdate = (id) => {
@@ -70,7 +77,7 @@ const Grievance = () => {
         </div>
         <table className='table table-bordered table-hover' >
             <thead>
-                <tr class="table-secondary">
+                <tr className="table-secondary">
                     <th>id</th>
                     <th>Title</th>
                     <th>Description</th>
