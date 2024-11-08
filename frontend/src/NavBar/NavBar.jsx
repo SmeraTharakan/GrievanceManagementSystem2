@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../Auth/AuthProvider';
 import './NavBar.css'
 
-const NavBar = () => {
+const NavBar = ({toggleSidebar}) => {
     const { isLoggedIn ,logout} = useAuth();
 
     const handleLogout = async () => {
@@ -19,6 +19,14 @@ const NavBar = () => {
         <div>
             <nav className="menu-bar">
             <div className='icon'>
+            {isLoggedIn && (
+            <>
+              <li>
+                <button className="hamburger-icon" onClick={toggleSidebar}>
+                  ☰
+                </button>
+              </li>
+            </>)}
                 <img src={Logo} className='logo'/>
                 <div className='gms'>GMS</div>
             </div>
