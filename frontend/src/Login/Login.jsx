@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../Auth/AuthProvider';
-import api from '../Api/api.jsx';
 import './Login.css';
 import user_icon from '../assets/person.png';
 import password_icon from '../assets/password.png';

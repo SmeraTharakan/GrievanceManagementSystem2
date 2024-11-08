@@ -11,8 +11,7 @@
   font-weight: 400;
 
   color: rgba(56, 16, 56, 0.87);
-  background-color: #f7ebfd;
-
+  background-color: #fff;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -30,14 +29,15 @@ a:hover {
 }
 
 
-h1 {
+body h1{
   font-size: 3.2em;
   line-height: 1.1;
 }
 
-h2 {
+body h2{
   font-size: 2.8em;
   line-height: 1.1;
+  margin-bottom: 30px;
 }
 
 p{
@@ -50,10 +50,10 @@ p{
   unicode-bidi: isolate;
 }
 
-button {
-  border-radius: 50px;
+body button {
   border: 1px solid transparent;
-  width: 220px;
+  border-radius: 50px;
+  width: 250px;
   height: 59px;
   padding: 0.6em 1.2em;
   font-size: 19px;

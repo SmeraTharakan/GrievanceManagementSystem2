@@ -1,0 +1,56 @@
+.line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  
+}
+
+.gform{
+  margin-left: 18px;
+  width: 95%;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 900px;
+  width: 100%;
+  height: 500px;
+  position: relative;
+  
+  z-index: 1000;
+}
+
+.content input,
+.content textarea {
+  width: 100%;
+  padding: 10px;
+}
+
+.sub-can{
+  width: 815px;
+  height: auto;
+  display: flex;
+  justify-content: space-around;
+}
+
+
