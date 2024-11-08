@@ -2,6 +2,8 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import api from '../Api/api';
 import './Grievance.css'
+import bin from '../assets/bin.png';
+import edit from '../assets/edit.png';
 
 const Grievance = () => {
     const userId = localStorage.getItem("userId");
@@ -22,6 +24,15 @@ const Grievance = () => {
 
     },[refresh])
 
+    const handleDelete = (id) => {
+      console.log("Delete grievance");
+    };
+
+    const handleUpdate = (id) => {
+      console.log("Update grievance ");
+    };
+  
+
     const handleAddGrievance = async (e) => {
       e.preventDefault();
       const grievanceData = {
@@ -41,11 +52,11 @@ const Grievance = () => {
       } catch (error) {
           console.error('Error creating grievance:', error);
       }
-  };
+    };
 
     const toggleModal = () => {
         setShowModal(!showModal);
-      };
+    };
 
 
         
@@ -66,6 +77,7 @@ const Grievance = () => {
                     <th>Category</th>
                     <th>UserId</th>
                     <th>Status</th>
+                    <th>Action</th>
                     
                 </tr>
             </thead>
@@ -79,6 +91,20 @@ const Grievance = () => {
                             <td>{grievance.category}</td>
                             <td>{grievance.userId}</td>
                             <td>{grievance.status}</td>
+                            <td>
+                                <img
+                                    src={edit}
+                                    alt="Update"
+                                    onClick={() => handleUpdate(grievance.id)}
+                                    style={{ cursor: 'pointer', width: '20px', marginRight: '7px' }}
+                                />
+                                <img
+                                    src={bin}
+                                    alt="Delete"
+                                    onClick={() => handleDelete(grievance.id)}
+                                    style={{ cursor: 'pointer', width: '20px' }}
+                                />
+                            </td>
                             
                         </tr>
                     )
