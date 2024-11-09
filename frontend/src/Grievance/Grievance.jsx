@@ -8,9 +8,11 @@ import edit from '../assets/edit.png';
 const Grievance = () => {
     const userId = localStorage.getItem("userId");
     const [grievances,setGrievances] =useState([])
-    const [showModal, setShowModal] = useState(false);
+    const [showAddModel, setshowAddModel] = useState(false);
+    const [showEditModel, setshowEditModel] = useState(false);
     const [title, setTitle] = useState('');        
     const [description, setDescription] = useState('');
+    const [gId,setGId] =useState();
     const [refresh, setRefresh] = useState(false);
 
     const listGrievance = ()=> api.get(`api/grievances/user/${userId}`);
@@ -34,10 +36,6 @@ const Grievance = () => {
         console.error('Error deleting grievance:', error);
     }
     };
-
-    const handleUpdate = (id) => {
-      console.log("Update grievance ");
-    };
   
 
     const handleAddGrievance = async (e) => {
@@ -51,9 +49,7 @@ const Grievance = () => {
       try {
           const response = await api.post('/api/grievances/create', grievanceData);
           console.log('Grievance created successfully:', response.data);
-          setTitle('');
-          setDescription('');
-          toggleModal();
+          toggleAdd();
 
           setRefresh(!refresh);
       } catch (error) {
@@ -61,17 +57,52 @@ const Grievance = () => {
       }
     };
 
-    const toggleModal = () => {
-        setShowModal(!showModal);
+    const updateTitle = async () => {
+      try {
+          const response = await api.put(`/api/grievances/updateTitle/${gId}`,title, {
+            headers: { "Content-Type": "text/plain" }
+        });
+
+          console.log('Grievance updated successfully',title);
+
+          setRefresh(!refresh);
+      } catch (error) {
+          console.error('Error updating grievance:', error);
+      }
     };
 
+    const updateDescription = async () => {
+      try {
+          const response = await api.put(`/api/grievances/updateDescription/${gId}`,description, {
+            headers: { "Content-Type": "text/plain" }
+        });
 
-        
+          console.log('Grievance updated successfully',description);
+
+          setRefresh(!refresh);
+      } catch (error) {
+          console.error('Error updating grievance:', error);
+      }
+    };
+
+    const toggleAdd = () => {
+        setshowAddModel(!showAddModel);
+        setTitle('');
+        setDescription('');
+    };
+
+    const openEditModal = (grievance) => {
+        setTitle(grievance.title);      
+        setDescription(grievance.description); 
+        setshowEditModel(true);
+        setGId(grievance.id);
+    };
+
   return (
     <div className='container' >
         <div className='line'>
                 <h2>Grievances</h2>
-                <button className="add-grievance-btn" onClick={toggleModal}>
+                <button className="add-grievance-btn" onClick={toggleAdd}>
                 +  Add Grievance
                 </button>
         </div>
@@ -102,7 +133,7 @@ const Grievance = () => {
                                 <img
                                     src={edit}
                                     alt="Update"
-                                    onClick={() => handleUpdate(grievance.id)}
+                                    onClick={() => openEditModal(grievance)}
                                     style={{ cursor: 'pointer', width: '20px', marginRight: '7px' }}
                                 />
                                 <img
@@ -119,7 +150,7 @@ const Grievance = () => {
 
             </tbody>
         </table>
-        {showModal && (
+        {showAddModel && (
         <div className="overlay">
           <div className="content">
             <h3>Add New Grievance</h3>
@@ -143,11 +174,44 @@ const Grievance = () => {
               </div>
               <div className="sub-can">
               <button type="submit">Submit</button>
-              <button type="button" onClick={toggleModal}>Cancel</button>
+              <button type="button" onClick={toggleAdd}>Cancel</button>
               </div>
             </form>
           </div>
         </div>
+      )}
+      {showEditModel && (
+        <div className="overlay">
+            <div className="content">
+            <div onClick={() => setshowEditModel(false)} className='close'>X</div>
+              <h3>Edit Grievance</h3>
+              <div className='update'>
+                <div>
+                    <label>Title:</label>
+                    <div className='line'>
+                    <input
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+                    <button onClick={updateTitle}>Update</button>
+                    </div>
+                </div>
+                <div>
+                    <label>Description:</label>
+                    <div className='line'>
+                    <textarea
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                    <button onClick={updateDescription}>Update</button>
+                    </div>
+                </div>
+                
+              </div>
+            </div>
+        </div>
+                
       )}
     </div>
   )
