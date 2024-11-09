@@ -4,6 +4,7 @@ import api from '../Api/api';
 import './Grievance.css'
 import bin from '../assets/bin.png';
 import edit from '../assets/edit.png';
+import add from '../assets/add.png';
 
 const Grievance = () => {
     const userId = localStorage.getItem("userId");
@@ -102,9 +103,7 @@ const Grievance = () => {
     <div className='container' >
         <div className='line'>
                 <h2>Grievances</h2>
-                <button className="add-grievance-btn" onClick={toggleAdd}>
-                +  Add Grievance
-                </button>
+                <img src={add} alt="Add"  onClick={toggleAdd} style={{ cursor: 'pointer', width: '33px' }}/>
         </div>
         <table className='table table-bordered table-hover' >
             <thead>
