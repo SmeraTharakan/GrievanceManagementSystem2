@@ -1,0 +1,96 @@
+/* profile.css */
+
+.profile-container {
+    width: 60%;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.profile-container h2 {
+    color: #333;
+    margin: 1.5rem;
+}
+
+.profile-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+.profile-detail p strong{
+    margin-right: 20px;
+}
+
+
+.editable-field {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 24px;
+}
+
+.editable-field label {
+    font-size: 1.4rem;
+    margin-inline-start: 1em;
+    flex-shrink: 0;
+    width: 117px;
+}
+
+.editable-field span {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.editable-field input {
+    padding: 5px 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    width: 400px;
+    transition: border-color 0.3s ease;
+}
+
+.editable-field input:focus {
+    border-color: #007bff;
+}
+
+.editable-field img {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    transition: transform 0.2s ease;
+}
+
+.editable-field img:hover {
+    transform: scale(1.1);
+}
+
+.editable-field .password-dots {
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+}
+
+.tick-icon,
+.edit-icon {
+    margin-left: 8px;
+}
+
+@media (max-width: 768px) {
+    .profile-container {
+        width: 90%;
+    }
+    
+    .editable-field label {
+        font-size: 1rem;
+    }
+    
+    .editable-field input {
+        width: 150px;
+    }
+}

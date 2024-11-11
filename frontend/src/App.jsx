@@ -6,6 +6,7 @@ import About from './About/About.jsx'
 import Login from './Login/Login.jsx'
 import NavBar from './NavBar/NavBar.jsx'
 import SideBar from './SideBar/SideBar.jsx'
+import Profile from './Profile/Profile.jsx'
 import Grievance from './Grievance/Grievance.jsx'
 import {useAuth} from './Auth/AuthProvider.jsx';
 import React, { useState } from 'react';
@@ -28,6 +29,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/grievance" element={<Grievance />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       
     </>
