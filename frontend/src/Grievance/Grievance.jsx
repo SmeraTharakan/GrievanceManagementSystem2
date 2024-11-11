@@ -58,29 +58,18 @@ const Grievance = () => {
       }
     };
 
-    const updateTitle = async () => {
-      try {
-          const response = await api.put(`/api/grievances/updateTitle/${gId}`,title, {
-            headers: { "Content-Type": "text/plain" }
-        });
 
-          console.log('Grievance updated successfully',title);
-
-          setRefresh(!refresh);
-      } catch (error) {
-          console.error('Error updating grievance:', error);
-      }
+    const updateDetails = async () => {
+      const updateDetails = {
+        title,
+        description
     };
-
-    const updateDescription = async () => {
       try {
-          const response = await api.put(`/api/grievances/updateDescription/${gId}`,description, {
-            headers: { "Content-Type": "text/plain" }
-        });
+          const response = await api.put(`/api/grievances/updateDetails/${gId}`,updateDetails);
 
-          console.log('Grievance updated successfully',description);
+          console.log('Grievance updated successfully');
 
-          setRefresh(!refresh);
+          setRefresh(!refresh); 
       } catch (error) {
           console.error('Error updating grievance:', error);
       }
@@ -152,28 +141,33 @@ const Grievance = () => {
         {showAddModel && (
         <div className="overlay">
           <div className="content">
+          <div onClick={() => setshowAddModel(false)} className='close'>X</div>
             <h3>Add New Grievance</h3>
-            <form className="gform"onSubmit={handleAddGrievance}>
+            <form className="update"onSubmit={handleAddGrievance}>
               <div>
-              <label>Title:</label>
-              <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
-              />
+                <label>Title:</label>
+                <div>
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                />
+                </div>
               </div>
               <div>
               <label>Description:</label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required
-              />
+                <div>
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                />
+                </div>
               </div>
               <div className="sub-can">
-              <button type="submit">Submit</button>
-              <button type="button" onClick={toggleAdd}>Cancel</button>
+                <button type="submit">Submit</button>
+                <button type="button" onClick={toggleAdd}>Cancel</button>
               </div>
             </form>
           </div>
@@ -187,24 +181,26 @@ const Grievance = () => {
               <div className='update'>
                 <div>
                     <label>Title:</label>
-                    <div className='line'>
+                    <div>
                     <input
                         type="text"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                     />
-                    <button onClick={updateTitle}>Update</button>
                     </div>
                 </div>
                 <div>
                     <label>Description:</label>
-                    <div className='line'>
+                    <div >
                     <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />
-                    <button onClick={updateDescription}>Update</button>
                     </div>
+                </div>
+                <div className="sub-can">
+                  <button onClick={updateDetails}>Update</button>
+                  <button type="button" onClick={() => setshowEditModel(false)}>Cancel</button>
                 </div>
                 
               </div>

@@ -75,18 +75,12 @@ public class GrievanceService {
         
     }
 
-    public ResponseEntity <String> updateGrievanceTitle(Long id,String title){
+    public ResponseEntity <String> updateGrievanceDetails(Long id,GrievanceDto grievanceDto){
             Grievance Grievance = grievanceRepository.findById(id).orElseThrow(() -> new GrievanceNotFound("Grievance not found"));
-            Grievance.setTitle(title);
+            Grievance.setTitle(grievanceDto.getTitle());
+            Grievance.setDescription(grievanceDto.getDescription());
             grievanceRepository.save(Grievance);
             return ResponseEntity.ok("Grievance title updated successfully");
-    }
-
-    public ResponseEntity <String> updateGrievanceDescription(Long id,String description){
-            Grievance Grievance = grievanceRepository.findById(id).orElseThrow(() -> new GrievanceNotFound("Grievance not found"));
-            Grievance.setDescription(description);
-            grievanceRepository.save(Grievance);
-            return ResponseEntity.ok("Grievance description updated successfully");
     }
 
     public ResponseEntity <String> updateGrievanceCategory(Long id, String category){

@@ -18,15 +18,15 @@
   z-index: 999;
   
 }
-
+/*
 .gform{
-  margin-left: 18px;
-  width: 95%;
+  width: 80%;
   height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
 }
+  */
 
 .content {
   background-color: white;
@@ -34,7 +34,7 @@
   border-radius: 8px;
   max-width: 900px;
   width: 100%;
-  height: 500px;
+  height: 520px;
   position: relative;
   
   z-index: 1000;
@@ -44,23 +44,21 @@
 .content textarea {
   width: 100%;
   padding: 10px;
-  margin-right: 70px;
-}
-
-.sub-can{
-  width: 815px;
-  height: auto;
-  display: flex;
-  justify-content: space-around;
 }
 
 .update{
-  margin-left: 18px;
-  width: 85%;
+  margin: 0 auto;
+  width: 800px;
   height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+}
+
+.update input, 
+.update textarea{
+  margin: 20px 0px 0px 30px;
+  width: 90%;
 }
 
 .close{
@@ -75,3 +73,13 @@
   cursor: pointer;
 
 }
+
+.sub-can{
+  width: 815px;
+  height: auto;
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+}
+
+
