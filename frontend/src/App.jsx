@@ -8,6 +8,7 @@ import NavBar from './NavBar/NavBar.jsx'
 import SideBar from './SideBar/SideBar.jsx'
 import Profile from './Profile/Profile.jsx'
 import Grievance from './Grievance/Grievance.jsx'
+import Assignments from './Assignments/Assignments.jsx'
 import {useAuth} from './Auth/AuthProvider.jsx';
 import React, { useState } from 'react';
 
@@ -30,6 +31,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/grievance" element={<Grievance />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/assignments" element={<Assignments />} />
         </Routes>
       
     </>

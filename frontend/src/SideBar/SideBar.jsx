@@ -5,7 +5,7 @@ import { useAuth } from '../Auth/AuthProvider';
 import { Link } from 'react-router-dom';
 
 const SideBar = () => {
-  const {logout} = useAuth();
+  const {logout,user} = useAuth();
 
 
   const handleLogout = async () => {
@@ -23,7 +23,12 @@ const SideBar = () => {
       <ul>
         <li><Link to="/profile">Profile</Link></li>
         <li><Link to="/grievance">Grievances</Link></li>
-        <li><Link to="/assigned">Assigned</Link></li>
+        {user.role === 'ASSIGNEE' && (
+          <li><Link to="/assignments">Assignments</Link></li>
+        )}
+        {user.role === 'SUPERVISOR' && (
+          <li><Link to="/assignments">Assign Grievances</Link></li>
+        )}
         <li><button onClick={handleLogout} className="logout-btn">Logout</button></li>
       </ul>
     </div>

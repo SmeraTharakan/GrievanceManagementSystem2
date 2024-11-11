@@ -18,15 +18,6 @@
   z-index: 999;
   
 }
-/*
-.gform{
-  width: 80%;
-  height: 400px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-  */
 
 .content {
   background-color: white;
@@ -59,19 +50,6 @@
 .update textarea{
   margin: 20px 0px 0px 30px;
   width: 90%;
-}
-
-.close{
-  width: 100%;
-  height: 40px;
-  display: flex;
-  justify-content: end;
-}
-
-.close:hover{
-  font-weight: bolder;
-  cursor: pointer;
-
 }
 
 .sub-can{
