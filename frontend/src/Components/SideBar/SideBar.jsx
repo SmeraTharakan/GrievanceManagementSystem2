@@ -1,7 +1,7 @@
 
 import React,{ useState } from 'react';
 import './SideBar.css';
-import { useAuth } from '../Auth/AuthProvider';
+import { useAuth } from '../../Auth/AuthProvider';
 import { Link } from 'react-router-dom';
 
 const SideBar = () => {
@@ -24,10 +24,10 @@ const SideBar = () => {
         <li><Link to="/profile">Profile</Link></li>
         <li><Link to="/grievance">Grievances</Link></li>
         {user.role === 'ASSIGNEE' && (
-          <li><Link to="/assignments">Assignments</Link></li>
+          <li><Link to="/assign">Assignments</Link></li>
         )}
         {user.role === 'SUPERVISOR' && (
-          <li><Link to="/assignments">Assign Grievances</Link></li>
+          <li><Link to="/assign">Assign Grievances</Link></li>
         )}
         <li><button onClick={handleLogout} className="logout-btn">Logout</button></li>
       </ul>

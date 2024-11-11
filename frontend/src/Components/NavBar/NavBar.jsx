@@ -1,7 +1,7 @@
 import React from 'react'
-import Logo from '../assets/logoGvm.png'
+import Logo from '../../assets/logoGvm.png'
 import { Link } from 'react-router-dom'; 
-import { useAuth } from '../Auth/AuthProvider';
+import { useAuth } from '../../Auth/AuthProvider';
 import './NavBar.css'
 
 const NavBar = ({toggleSidebar}) => {

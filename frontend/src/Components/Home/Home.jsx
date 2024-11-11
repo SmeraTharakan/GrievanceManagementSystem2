@@ -1,5 +1,5 @@
 import React from 'react'
-import Cover from '../assets/cover.png'
+import Cover from '../../assets/cover.png'
 import './Home.css'
 import { useNavigate } from 'react-router-dom';
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import api from '../Api/api.jsx';
-import editIcon from '../assets/edit.png';  
-import tickIcon from '../assets/tick.png';  
+import api from '../../Api/api.jsx';
+import editIcon from '../../assets/edit.png';  
+import tickIcon from '../../assets/tick.png';  
 import './Profile.css'
 
 const Profile = () => {

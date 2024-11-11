@@ -1,9 +1,9 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import api from '../Api/api.jsx';
-import './Assignments.css';
+import api from '../../Api/api.jsx';
+import './Supervisor.css'
 
-const Assignments = () => {
+const Supervisor = () => {
     const userId = localStorage.getItem("userId");
     const [grievances,setGrievances] =useState([])
     const [selectedGrievance, setSelectedGrievance] = useState(null);
@@ -159,4 +159,4 @@ const Assignments = () => {
     </div>
   );
 }
-export default Assignments
+export default Supervisor

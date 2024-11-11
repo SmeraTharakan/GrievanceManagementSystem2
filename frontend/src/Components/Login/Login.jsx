@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../Auth/AuthProvider';
+import { useAuth } from '../../Auth/AuthProvider';
 import './Login.css';
-import user_icon from '../assets/person.png';
-import password_icon from '../assets/password.png';
-import email_icon from '../assets/email.png';
+import user_icon from '../../assets/person.png';
+import password_icon from '../../assets/password.png';
+import email_icon from '../../assets/email.png';
 
 const Login = () => {
     const { login ,logout} = useAuth();

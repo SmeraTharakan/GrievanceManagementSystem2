@@ -1,10 +1,10 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import api from '../Api/api';
+import api from '../../Api/api';
 import './Grievance.css'
-import bin from '../assets/bin.png';
-import edit from '../assets/edit.png';
-import add from '../assets/add.png';
+import bin from '../../assets/bin.png';
+import edit from '../../assets/edit.png';
+import add from '../../assets/add.png';
 
 const Grievance = () => {
     const userId = localStorage.getItem("userId");
