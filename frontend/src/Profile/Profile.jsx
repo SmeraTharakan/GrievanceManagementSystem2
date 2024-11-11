@@ -15,8 +15,12 @@ const Profile = () => {
 
     const [editingField, setEditingField] = useState(null); 
     const [newUsername, setNewUsername] = useState('');
-    const [newPassword, setNewPassword] = useState('');
     const [refresh, setRefresh] = useState(false);
+
+    const [showPasswordModal, setShowPasswordModal] = useState(false);
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmNewPassword, setConfirmNewPassword] = useState('');
 
     useEffect(() => {
         const fetchUserDetails = async () => {
@@ -37,23 +41,14 @@ const Profile = () => {
         if (field === 'password') setNewPassword(userDetails.password);
     };
 
-    const saveField = async (field) => {
+    const saveUsername = async () => {
         try {
-            let updatedValue, endpoint;
 
-            if (field === 'username') {
-                updatedValue = newUsername;
-                endpoint = `/api/users/updateUsername/${userId}`;
-            } else if (field === 'password') {
-                updatedValue = newPassword;
-                endpoint = `/api/users/updatePassword/${userId}`;
-            }
-
-            const response = await api.put(endpoint, updatedValue, {
+            const response = await api.put(`/api/users/updateUsername/${userId}`, newUsername, {
                 headers: { "Content-Type": "text/plain" }
             });
             
-            console.log(`Successfully updated ${field}:`, response.data);
+            console.log(`Successfully updated username:`, response.data);
             setRefresh(!refresh);
             setEditingField(null);
         } catch (error) {
@@ -61,75 +56,110 @@ const Profile = () => {
         }
     };
 
+    const handlePasswordReset = async () => {
+        if (newPassword !== confirmNewPassword) {
+            alert("New passwords do not match");
+            return;
+        }
+
+        try {
+            const response = await api.put(`/api/users/updatePassword/${userId}`, {
+                oldPassword: currentPassword,
+                newPassword: newPassword
+            });
+            console.log('Password updated successfully:', response.data);
+            setShowPasswordModal(false);
+            setCurrentPassword('');
+            setNewPassword('');
+            setConfirmNewPassword('');
+        } catch (error) {
+            console.error('Error updating password:', error);
+        }
+    };
+
     return (
         <div className='fbox'>
-        <div className="profile-container" >
-            <h2>Profile</h2>
-            <div className="profile-detail">
-                <p><strong>User ID :</strong>{userId}</p>
-                <p><strong>Email :</strong> {userDetails.email}</p>
+            <div className="profile-container" >
+                <h2>Profile</h2>
+                <div className="profile-detail">
+                    <p><strong>User ID :</strong>{userId}</p>
+                    <p><strong>Email :</strong> {userDetails.email}</p>
 
-                <div className="editable-field">
-                    <label><strong>Username :</strong></label>
-                    {editingField === 'username' ? (
-                        <span>
-                            <input
-                                type="text"
-                                value={newUsername}
-                                onChange={(e) => setNewUsername(e.target.value)}
-                                style={{ marginRight: '10px' }}
-                            />
-                            <img
-                                src={tickIcon}
-                                alt="Save"
-                                onClick={() => saveField('username')}
-                                style={{ cursor: 'pointer', width: '20px' }}
-                            />
-                        </span>
-                    ) : (
-                        <span>
-                            {userDetails.username}
-                            <img
-                                src={editIcon}
-                                alt="Edit"
-                                onClick={() => toggleEdit('username')}
-                                style={{ cursor: 'pointer', marginLeft: '10px', width: '20px' }}
-                            />
-                        </span>
+                    <div className="editable-field">
+                        <label><strong>Username :</strong></label>
+                        {editingField === 'username' ? (
+                            <span>
+                                <input
+                                    type="text"
+                                    value={newUsername}
+                                    onChange={(e) => setNewUsername(e.target.value)}
+                                    style={{ marginRight: '10px' }}
+                                />
+                                <img
+                                    src={tickIcon}
+                                    alt="Save"
+                                    onClick={() => saveUsername()}
+                                    style={{ cursor: 'pointer', width: '20px' }}
+                                />
+                            </span>
+                        ) : (
+                            <span>
+                                {userDetails.username}
+                                <img
+                                    src={editIcon}
+                                    alt="Edit"
+                                    onClick={() => toggleEdit('username')}
+                                    style={{ cursor: 'pointer', marginLeft: '10px', width: '20px' }}
+                                />
+                            </span>
+                        )}
+                    </div>
+                    <button onClick={() => setShowPasswordModal(true)}>Change Password</button>
+                    {showPasswordModal && (
+                        <div className="profile-overlay">
+                            <div className="profile-content">
+                            <div onClick={() => setShowPasswordModal(false)} className='close'>X</div>
+                                <h3>Change Password</h3>
+                                <div className='profile-update'>
+                                    <div>
+                                        <label>Current Password:</label>
+                                        <div>
+                                        <input
+                                            type="password"
+                                            value={currentPassword}
+                                            onChange={(e) => setCurrentPassword(e.target.value)}
+                                        />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label>New Password:</label>
+                                        <div>
+                                        <input
+                                            type="password"
+                                            value={newPassword}
+                                            onChange={(e) => setNewPassword(e.target.value)}
+                                        />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label>Confirm New Password:</label>
+                                        <div>
+                                        <input
+                                            type="password"
+                                            value={confirmNewPassword}
+                                            onChange={(e) => setConfirmNewPassword(e.target.value)}
+                                        />
+                                        </div>
+                                    </div>
+                                </div>
+                                <button className="reset-btn" onClick={handlePasswordReset}>Reset Password</button>
+                            </div>
+                        </div>
                     )}
-                </div>
 
-                <div className="editable-field">
-                    <label><strong>Password :</strong></label>
-                    {editingField === 'password' ? (
-                        <span>
-                            <input
-                                type="password"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                                style={{ marginRight: '10px' }}
-                            />
-                            <img
-                                src={tickIcon}
-                                alt="Save"
-                                onClick={() => saveField('password')}
-                                style={{ cursor: 'pointer', width: '20px' }}
-                            />
-                        </span>
-                    ) : (
-                        <span>
-                            {"*".repeat(5)}
-                            <img
-                                src={editIcon}
-                                alt="Edit"
-                                onClick={() => toggleEdit('password')}
-                                style={{ cursor: 'pointer', marginLeft: '10px', width: '20px' }}
-                            />
-                        </span>
-                    )}
+                
                 </div>
             </div>
-        </div>
         </div>
     );
 };

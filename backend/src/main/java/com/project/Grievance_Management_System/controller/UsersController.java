@@ -64,8 +64,8 @@ public class UsersController {
     }
 
     @PutMapping ("/updatePassword/{id}")
-    public ResponseEntity<String> updatePassword(@PathVariable Long id, @RequestBody String password){
-        return usersService.updateUserpassword(id,password);
+    public ResponseEntity<String> updatePassword(@PathVariable Long id, @RequestBody PasswordDto passwordDto){
+        return usersService.updateUserpassword(id,passwordDto);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'SUPERVISOR')")

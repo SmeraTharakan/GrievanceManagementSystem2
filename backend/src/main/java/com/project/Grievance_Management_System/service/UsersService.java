@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 //import org.springframework.web.bind.annotation.RequestBody;
 
+import com.project.Grievance_Management_System.dto.PasswordDto;
 //import com.project.Grievance_Management_System.dto.AuthRequest;
 import com.project.Grievance_Management_System.dto.UserDto;
 import com.project.Grievance_Management_System.entity.Users;
@@ -109,10 +110,13 @@ public class UsersService {
       
     }
 
-    public ResponseEntity<String> updateUserpassword(Long id,String password){
+    public ResponseEntity<String> updateUserpassword(Long id,PasswordDto passwordDto){
         
         Users User = usersRepository.findById(id).orElseThrow(() -> new UserNotFound("User not found"));
-        User.setPassword(encoder.encode(password));
+        if (!encoder.matches(passwordDto.getOldPassword(), User.getPassword())) {
+            return ResponseEntity.ok("Current password is incorrect");
+        }
+        User.setPassword(encoder.encode(passwordDto.getNewPassword()));
         usersRepository.save(User);
         return ResponseEntity.ok("Password updated successfully");
       
