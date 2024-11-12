@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.Grievance_Management_System.dto.AssignmentDto;
+import com.project.Grievance_Management_System.exception.AssignmentNotFound;
 import com.project.Grievance_Management_System.service.AssignmentService;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class AssignmentController {
 
     @PreAuthorize("hasAnyRole('ADMIN','SUPERVISOR','ASSIGNEE')")
     @GetMapping ("/grievance/{id}")
-    public ResponseEntity<List<AssignmentDto>> getAssignmentByGrievance(@PathVariable Long id){
+    public ResponseEntity<AssignmentDto> getAssignmentByGrievance(@PathVariable Long id){
         return assignmentService.getByGrievance(id);
     }
 
@@ -54,7 +55,13 @@ public class AssignmentController {
     public ResponseEntity<List<AssignmentDto>> getAssignmentByAssignedTo(@PathVariable Long id){
         return assignmentService.getByAssignedTo(id);
     }
-    
+
+    @PreAuthorize("hasAnyRole('ADMIN','SUPERVISOR','ASSIGNEE')")
+    @GetMapping("/test-assignment-not-found")
+    public void testAssignmentNotFound() {
+        throw new AssignmentNotFound("Assignment not found test");
+    }
+
     @PreAuthorize("hasAnyRole('SUPERVISOR')")
     @PostMapping ("/create")
     public ResponseEntity<String> createAssignment(@RequestBody AssignmentDto assignmentDto){

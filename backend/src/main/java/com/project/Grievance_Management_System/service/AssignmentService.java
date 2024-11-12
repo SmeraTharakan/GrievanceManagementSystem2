@@ -36,15 +36,25 @@ public class AssignmentService {
     }
 
     public ResponseEntity<AssignmentDto> getAssignmentById(Long id){
-        Assignment assignment=assignmentRepository.findById(id).orElseThrow(() -> new AssignmentNotFound("Assignment not found"));
+        Assignment assignment=assignmentRepository.findById(id).orElse(null);
+        if (assignment == null) {
+            throw new AssignmentNotFound("Assignment not found for ID: " + id);
+        }
         AssignmentDto assignmentDto=converter.AToDto(assignment);
-        return ResponseEntity.ok(assignmentDto);
+        return ResponseEntity.ok(assignmentDto);  
     }
 
-    public ResponseEntity<List<AssignmentDto>> getByGrievance(Long id){
-        Grievance grievance= grievanceRepository.findById(id).orElseThrow(() -> new GrievanceNotFound("Grievance not found"));
-        List <AssignmentDto> assignmentDtoList = converter.AToDto(assignmentRepository.findByGrievance(grievance));
-        return ResponseEntity.ok(assignmentDtoList);
+    public ResponseEntity<AssignmentDto> getByGrievance(Long id){
+        Grievance grievance= grievanceRepository.findById(id).orElse(null);
+        if (grievance == null) {
+            throw new GrievanceNotFound("Grievance not found for ID : " +id);
+        }
+        Assignment assignment = assignmentRepository.findByGrievance(grievance).orElse(null);
+        if (assignment == null) {
+            throw new AssignmentNotFound("Assignment not found for ID :" + id);
+        }
+        AssignmentDto assignmentDto = converter.AToDto(assignment);
+        return ResponseEntity.ok(assignmentDto);
     }
 
     public ResponseEntity<List<AssignmentDto>> getByAssignedBy(Long id){

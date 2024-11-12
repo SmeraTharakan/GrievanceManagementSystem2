@@ -7,11 +7,12 @@ import com.project.Grievance_Management_System.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AssignmentRepository extends JpaRepository<Assignment,Long>{
 
-    public List<Assignment> findByGrievance(Grievance grievance);
+    public Optional<Assignment> findByGrievance(Grievance grievance);
     public List<Assignment> findByAssignedBy(Users user);
     public List<Assignment> findByAssignedTo(Users user);
     
