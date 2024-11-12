@@ -10,6 +10,7 @@ const Supervisor = () => {
     const [activeTab, setActiveTab] = useState("details");
     const [refresh, setRefresh] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("");
+    const [assignment, setAssignment] = useState(null);
 
     const listGrievance = ()=> api.get(`api/grievances`);
     useEffect(()=> {
@@ -39,6 +40,18 @@ const Supervisor = () => {
         }
     };
 
+    const fetchAssignmentDetails = async (grievanceId) => {
+        
+        try {
+            const response = await api.get(`/api/assignments/grievance/${grievanceId}`);
+            setAssignment(response.data);
+            console.log(response.data);
+        } catch (error) {
+            console.error("Error fetching assignment:", error);
+            setAssignment(null); 
+        }
+    };
+
     const openModal = (grievance) => {
         setSelectedGrievance(grievance);
         if(grievance.category){
@@ -47,7 +60,7 @@ const Supervisor = () => {
         else{
             setSelectedCategory("Choose Category")
         }
-        
+        fetchAssignmentDetails(grievance.id);
         setActiveTab("details");
     };
 
@@ -150,7 +163,18 @@ const Supervisor = () => {
 
                         {activeTab === "assign" && (
                             <div className="tab-content">
-                                <p>This section can be used to add assignment information.</p>
+                                {assignment && Object.keys(assignment).length > 0? (
+                                    <table className="table">
+                                        <tbody>
+                                            <tr><td><strong>Assignment ID:</strong></td><td>{assignment.assignmentId}</td></tr>
+                                            <tr><td><strong>Grievance ID:</strong></td><td>{assignment.grievanceId}</td></tr>
+                                            <tr><td><strong>Supervisor ID:</strong></td><td>{assignment.supervisorId}</td></tr>
+                                            <tr><td><strong>Assignee ID:</strong></td><td>{assignment.assigneeId}</td></tr>
+                                        </tbody>
+                                    </table>
+                                ) : (
+                                    <button >Add Assignment</button>
+                                )}
                             </div>
                         )}
                     </div>
