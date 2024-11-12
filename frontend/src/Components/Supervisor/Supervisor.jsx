@@ -2,6 +2,8 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import api from '../../Api/api.jsx';
 import './Supervisor.css'
+import edit from '../../assets/edit.png';
+import tick from '../../assets/tick.png';
 
 const Supervisor = () => {
     const userId = localStorage.getItem("userId");
@@ -11,7 +13,8 @@ const Supervisor = () => {
     const [refresh, setRefresh] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("");
     const [assignment, setAssignment] = useState(null);
-    const [assigneeId, setAssigneeId] = useState();
+    const [assigneeId, setAssigneeId] = useState("");
+    const [isEditingAssignee, setIsEditingAssignee] = useState(false);
     
 
     const listGrievance = ()=> api.get(`api/grievances`);
@@ -59,6 +62,7 @@ const Supervisor = () => {
     };
 
     const addAssignment = async () => {
+        console.log(assigneeId);
         try {
             const newAssignment = {
                 supervisorId: userId, 
@@ -73,6 +77,19 @@ const Supervisor = () => {
             setAssignment(response.data); 
         } catch (error) {
             console.error("Error adding assignment:", error);
+        }
+    };
+
+    const updateAssigneeId = async () => {
+        console.log(assignment.assignmentId);
+        try {
+            const response = await api.put(`/api/assignments/updateAssignee/${assignment.assignmentId}`,{ assigneeId: assigneeId });
+            console.log("Assignee ID updated successfully");
+            setIsEditingAssignee(false);
+            fetchAssignmentDetails(selectedGrievance.id);
+            setRefresh(!refresh);
+        } catch (error) {
+            console.error("Error updating Assignee ID:", error);
         }
     };
 
@@ -92,7 +109,9 @@ const Supervisor = () => {
 
     const openModal = (grievance) => {
         setAssignment(null);
+        setAssigneeId("");
         setSelectedGrievance(grievance);
+        setIsEditingAssignee(false)
         if(grievance.category){
             setSelectedCategory(grievance.category)
         }
@@ -209,7 +228,32 @@ const Supervisor = () => {
                                             <tr><td><strong>Assignment ID:</strong></td><td>{assignment.assignmentId}</td></tr>
                                             <tr><td><strong>Grievance ID:</strong></td><td>{assignment.grievanceId}</td></tr>
                                             <tr><td><strong>Supervisor ID:</strong></td><td>{assignment.supervisorId}</td></tr>
-                                            <tr><td><strong>Assignee ID:</strong></td><td>{assignment.assigneeId}</td></tr>
+                                            <tr><td><strong>Assignee ID:</strong></td>
+                                                    <td>
+                                                        {isEditingAssignee ? (
+                                                            <>
+                                                                <input
+                                                                    type="text"
+                                                                    value={assigneeId}
+                                                                    onChange={(e) => setAssigneeId(e.target.value)}
+                                                                />
+                                                                <img src={tick} 
+                                                                alt="confirm" 
+                                                                onClick={updateAssigneeId} 
+                                                                style={{ cursor: 'pointer', marginLeft: '10px', width: '20px' }} />
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                {assignment.assigneeId}
+                                                                <img src={edit} 
+                                                                alt="edit" 
+                                                                onClick={() => setIsEditingAssignee(true)} 
+                                                                style={{ cursor: 'pointer', marginLeft: '10px', width: '20px' }} />
+                                                            </>
+                                                        )}
+                                                    </td>
+                                                </tr>
+
                                         </tbody>
                                     </table>
                                     <button onClick={deleteAssignment}>Delete Assignment</button>

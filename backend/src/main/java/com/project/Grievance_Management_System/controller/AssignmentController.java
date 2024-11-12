@@ -70,14 +70,15 @@ public class AssignmentController {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping ("/updateSupervisor/{id}")
-    public ResponseEntity<String> updateSupervisor(@PathVariable Long id ,@RequestBody Long supervisorId){
-        return assignmentService.updateAssignedBy(id,supervisorId);
+    public ResponseEntity<String> updateSupervisor(@PathVariable Long id ,@RequestBody AssignmentDto assignmentDto){
+
+        return assignmentService.updateAssignedBy(id,assignmentDto);
     }
 
     @PreAuthorize("hasAnyRole('SUPERVISOR')")
     @PutMapping ("/updateAssignee/{id}")
-    public ResponseEntity<String> updateAssignee(@PathVariable Long id ,@RequestBody Long assigneeId){
-        return assignmentService.updateAssignedTo(id,assigneeId);
+    public ResponseEntity<String> updateAssignee(@PathVariable Long id ,@RequestBody AssignmentDto assignmentDto){
+        return assignmentService.updateAssignedTo(id,assignmentDto);
     }
 
     @PreAuthorize("hasAnyRole('SUPERVISOR')")

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../Api/api.jsx';
-import editIcon from '../../assets/edit.png';  
-import tickIcon from '../../assets/tick.png';  
+import edit from '../../assets/edit.png';  
+import tick from '../../assets/tick.png';  
 import './Profile.css'
 
 const Profile = () => {
@@ -96,7 +96,7 @@ const Profile = () => {
                                     style={{ marginRight: '10px' }}
                                 />
                                 <img
-                                    src={tickIcon}
+                                    src={tick}
                                     alt="Save"
                                     onClick={() => saveUsername()}
                                     style={{ cursor: 'pointer', width: '20px' }}
@@ -106,7 +106,7 @@ const Profile = () => {
                             <span>
                                 {userDetails.username}
                                 <img
-                                    src={editIcon}
+                                    src={edit}
                                     alt="Edit"
                                     onClick={() => toggleEdit('username')}
                                     style={{ cursor: 'pointer', marginLeft: '10px', width: '20px' }}
