@@ -19,7 +19,7 @@ public class Assignment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="grievance_id", nullable=false,foreignKey = @ForeignKey(name = "fk_grievance_assignment"))
     private Grievance  grievance;
 

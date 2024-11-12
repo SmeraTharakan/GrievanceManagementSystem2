@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data
@@ -29,6 +32,10 @@ public class Grievance {
 
     private String category;
     private String status;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "grievance", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Assignment> assignments;
 
     @Column(updatable=false)
     private LocalDateTime createdAt;

@@ -11,6 +11,8 @@ const Supervisor = () => {
     const [refresh, setRefresh] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("");
     const [assignment, setAssignment] = useState(null);
+    const [assigneeId, setAssigneeId] = useState();
+    
 
     const listGrievance = ()=> api.get(`api/grievances`);
     useEffect(()=> {
@@ -44,15 +46,52 @@ const Supervisor = () => {
         
         try {
             const response = await api.get(`/api/assignments/grievance/${grievanceId}`);
-            setAssignment(response.data);
-            console.log(response.data);
+            if (response.data && typeof response.data === 'object' && !Array.isArray(response.data)) {
+                setAssignment(response.data);
+            } else {
+                setAssignment(null); 
+                console.log("No assignment found or data is invalid");
+            }
         } catch (error) {
             console.error("Error fetching assignment:", error);
             setAssignment(null); 
         }
     };
 
+    const addAssignment = async () => {
+        try {
+            const newAssignment = {
+                supervisorId: userId, 
+                assigneeId: assigneeId,
+                grievanceId: selectedGrievance ? selectedGrievance.id : null
+            };
+            const response = await api.post('/api/assignments/create', newAssignment);
+            console.log("Assignment added successfully:", response.data);
+
+            fetchAssignmentDetails(selectedGrievance.id);
+            setRefresh(!refresh);  
+            setAssignment(response.data); 
+        } catch (error) {
+            console.error("Error adding assignment:", error);
+        }
+    };
+
+    const deleteAssignment = async () => {
+        try {
+            const response = await api.delete(`/api/assignments/delete/${assignment.assignmentId}`);
+            console.log("Assignment deleted successfully:", response.data);
+
+            setAssignment(null);
+            fetchAssignmentDetails(selectedGrievance.id);
+            setRefresh(!refresh);  
+            setAssignment(response.data); 
+        } catch (error) {
+            console.error("Error deleting assignment:", error);
+        }
+    };
+
     const openModal = (grievance) => {
+        setAssignment(null);
         setSelectedGrievance(grievance);
         if(grievance.category){
             setSelectedCategory(grievance.category)
@@ -164,6 +203,7 @@ const Supervisor = () => {
                         {activeTab === "assign" && (
                             <div className="tab-content">
                                 {assignment && Object.keys(assignment).length > 0? (
+                                    <>
                                     <table className="table">
                                         <tbody>
                                             <tr><td><strong>Assignment ID:</strong></td><td>{assignment.assignmentId}</td></tr>
@@ -172,8 +212,20 @@ const Supervisor = () => {
                                             <tr><td><strong>Assignee ID:</strong></td><td>{assignment.assigneeId}</td></tr>
                                         </tbody>
                                     </table>
+                                    <button onClick={deleteAssignment}>Delete Assignment</button>
+                                    </>
                                 ) : (
-                                    <button >Add Assignment</button>
+                                    <div>
+                                        <label>Assignee ID:</label>
+                                        <input
+                                            type="text"
+                                            name="assigneeId"
+                                            value={assigneeId}
+                                            onChange={(e) => setAssigneeId(e.target.value)}
+                                            placeholder="Enter Assignee ID"
+                                        />
+                                        <button onClick={addAssignment}>Add Assignment</button>
+                                    </div>
                                 )}
                             </div>
                         )}

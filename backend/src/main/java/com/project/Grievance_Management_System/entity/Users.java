@@ -43,22 +43,16 @@ public class Users {
     }
 
     @JsonIgnore
-    @OneToMany(mappedBy = "assignedTo", cascade = CascadeType.ALL)
-    private List<Assignment> assignedtoGrievances;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Grievance> grievances;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "assignedTo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Assignment> assigneeAssignments;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "assignedBy", cascade = CascadeType.ALL)
-    private List<Assignment> assignedbyGrievances;
-
-    @PreRemove
-    private void preRemove() {
-        if (assignedtoGrievances != null) {
-            assignedtoGrievances.forEach(assignment -> assignment.setAssignedTo(null));
-        }
-        if (assignedbyGrievances != null) {
-            assignedbyGrievances.forEach(assignment -> assignment.setAssignedBy(null));
-        }
-    }
+    @OneToMany(mappedBy = "assignedBy", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Assignment> supervisorAssignments;
 
     public enum Role{
         USER, ASSIGNEE, SUPERVISOR, ADMIN
