@@ -222,7 +222,7 @@ const Supervisor = () => {
                         {activeTab === "assign" && (
                             <div className="tab-content">
                                 {assignment && Object.keys(assignment).length > 0? (
-                                    <>
+                                    <div className='assign-container'>
                                     <table className="table">
                                         <tbody>
                                             <tr><td><strong>Assignment ID:</strong></td><td>{assignment.assignmentId}</td></tr>
@@ -248,7 +248,7 @@ const Supervisor = () => {
                                                                 <img src={edit} 
                                                                 alt="edit" 
                                                                 onClick={() => setIsEditingAssignee(true)} 
-                                                                style={{ cursor: 'pointer', marginLeft: '10px', width: '20px' }} />
+                                                                style={{ cursor: 'pointer', marginLeft: '50px', width: '20px' }} />
                                                             </>
                                                         )}
                                                     </td>
@@ -256,11 +256,12 @@ const Supervisor = () => {
 
                                         </tbody>
                                     </table>
-                                    <button onClick={deleteAssignment}>Delete Assignment</button>
-                                    </>
+                                    <button className='dlt-btn' onClick={deleteAssignment}>Delete Assignment</button>
+                                    </div>
                                 ) : (
-                                    <div>
-                                        <label>Assignee ID:</label>
+                                    <div className='add-assignee'>
+                                        <div>
+                                        <label><strong>Assignee ID:</strong></label>
                                         <input
                                             type="text"
                                             name="assigneeId"
@@ -268,6 +269,7 @@ const Supervisor = () => {
                                             onChange={(e) => setAssigneeId(e.target.value)}
                                             placeholder="Enter Assignee ID"
                                         />
+                                        </div>
                                         <button onClick={addAssignment}>Add Assignment</button>
                                     </div>
                                 )}

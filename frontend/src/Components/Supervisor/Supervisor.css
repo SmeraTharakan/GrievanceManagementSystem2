@@ -13,23 +13,21 @@
 
 .details-content {
     background: #fff;
-    padding: 15px;
+    padding: 15px 25px;
     border-radius: 8px;
     width: 850px;
     height: 480px;
 }
 
 .tab-content {
-    padding: 10px;
     width: 95%;
     height: 300px;
     margin: 40px auto;
 }
-
+/*
 .details-navbar {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 20px;
 }
 
 .details-navbar button {
@@ -45,5 +43,62 @@
 .details-navbar button.active {
     border-bottom: 2px solid #007bff;
 }
+    */
+.details-navbar {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
 
+.details-navbar button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+    cursor: pointer;
+    position: relative;
+    color: #555;
+    outline: none;
+    transition: color 0.3s;
+}
 
+.details-navbar button.active {
+    color: #af44f2;
+}
+
+.details-navbar button.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #af44f2;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.add-assignee {
+    height: 200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+.add-assignee label{
+    font-size: 25px;
+    margin-right: 20px;
+}
+
+.dlt-btn{
+    display: block;
+    margin: 50px auto;
+}
+
+.assign-container{
+    width: 380px;
+    margin: 0 auto;
+}
