@@ -7,12 +7,12 @@ import tick from '../../assets/tick.png';
 
 const Supervisor = () => {
     const userId = localStorage.getItem("userId");
-    const [grievances,setGrievances] =useState([])
-    const [selectedGrievance, setSelectedGrievance] = useState(null);
+    const [grievances,setGrievances] =useState([]);
+    const [assignments, setAssignments] = useState({});
     const [activeTab, setActiveTab] = useState("details");
     const [refresh, setRefresh] = useState(false);
+    const [selectedGrievance, setSelectedGrievance] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState("");
-    const [assignment, setAssignment] = useState(null);
     const [assigneeId, setAssigneeId] = useState("");
     const [isEditingAssignee, setIsEditingAssignee] = useState(false);
     
@@ -28,10 +28,27 @@ const Supervisor = () => {
 
     },[refresh])
 
-    const handleCategoryChange = async(e) => {
-        const newCategory = e.target.value;
+    useEffect(() => {
+        const fetchAssignments = async () => {
+            const assignmentsData = {};
+            for (const grievance of grievances) {
+                try {
+                    const response = await api.get(`/api/assignments/grievance/${grievance.id}`);
+                    if (response.data && typeof response.data === 'object' && !Array.isArray(response.data)) {
+                        assignmentsData[grievance.id] = response.data;
+                    }
+                } catch (error) {
+                    console.error(`Error fetching assignment for grievance ID ${grievance.id}:`, error);
+                }
+            }
+            setAssignments(assignmentsData);
+        };
+
+        if (grievances.length) fetchAssignments();
+    }, [grievances,refresh]);
+
+    const handleCategoryChange = async(newCategory) => {
         setSelectedCategory(newCategory);
-        console.log(newCategory)
         try {
 
             const response = await api.put(`/api/grievances/updateCategory/${selectedGrievance.id}`, newCategory, {
@@ -45,22 +62,6 @@ const Supervisor = () => {
         }
     };
 
-    const fetchAssignmentDetails = async (grievanceId) => {
-        
-        try {
-            const response = await api.get(`/api/assignments/grievance/${grievanceId}`);
-            if (response.data && typeof response.data === 'object' && !Array.isArray(response.data)) {
-                setAssignment(response.data);
-            } else {
-                setAssignment(null); 
-                console.log("No assignment found or data is invalid");
-            }
-        } catch (error) {
-            console.error("Error fetching assignment:", error);
-            setAssignment(null); 
-        }
-    };
-
     const addAssignment = async () => {
         console.log(assigneeId);
         try {
@@ -69,24 +70,23 @@ const Supervisor = () => {
                 assigneeId: assigneeId,
                 grievanceId: selectedGrievance ? selectedGrievance.id : null
             };
-            const response = await api.post('/api/assignments/create', newAssignment);
-            console.log("Assignment added successfully:", response.data);
+            await api.post('/api/assignments/create', newAssignment);
+            await api.put(`/api/grievances/updateStatus/${selectedGrievance.id}`, "Grievance assigned" ,{
+                headers: { "Content-Type": "text/plain" }
+            });
 
-            fetchAssignmentDetails(selectedGrievance.id);
             setRefresh(!refresh);  
-            setAssignment(response.data); 
+             
         } catch (error) {
             console.error("Error adding assignment:", error);
         }
     };
 
     const updateAssigneeId = async () => {
-        console.log(assignment.assignmentId);
         try {
-            const response = await api.put(`/api/assignments/updateAssignee/${assignment.assignmentId}`,{ assigneeId: assigneeId });
+            await api.put(`/api/assignments/updateAssignee/${assignments[selectedGrievance.id].assignmentId}`,{ assigneeId: assigneeId });
             console.log("Assignee ID updated successfully");
             setIsEditingAssignee(false);
-            fetchAssignmentDetails(selectedGrievance.id);
             setRefresh(!refresh);
         } catch (error) {
             console.error("Error updating Assignee ID:", error);
@@ -95,31 +95,28 @@ const Supervisor = () => {
 
     const deleteAssignment = async () => {
         try {
-            const response = await api.delete(`/api/assignments/delete/${assignment.assignmentId}`);
+            const response = await api.delete(`/api/assignments/delete/${assignments[selectedGrievance.id].assignmentId}`);
             console.log("Assignment deleted successfully:", response.data);
 
-            setAssignment(null);
-            fetchAssignmentDetails(selectedGrievance.id);
             setRefresh(!refresh);  
-            setAssignment(response.data); 
+             
         } catch (error) {
             console.error("Error deleting assignment:", error);
         }
     };
 
     const openModal = (grievance) => {
-        setAssignment(null);
-        setAssigneeId("");
         setSelectedGrievance(grievance);
-        setIsEditingAssignee(false)
+        setIsEditingAssignee(false);
+        setAssigneeId(assignments[grievance.id]?.assigneeId || "");
         if(grievance.category){
             setSelectedCategory(grievance.category)
         }
         else{
             setSelectedCategory("Choose Category")
         }
-        fetchAssignmentDetails(grievance.id);
         setActiveTab("details");
+
     };
 
   return (
@@ -150,6 +147,7 @@ const Supervisor = () => {
                             <td>{grievance.category}</td>
                             <td>{grievance.userId}</td>
                             <td>{grievance.status}</td>
+                            <td>{assignments[grievance.id]?.assigneeId || "Unassigned"}</td>
                             
                         </tr>
                     )
@@ -197,7 +195,7 @@ const Supervisor = () => {
                                             <td>
                                             <select
                                                 value={selectedCategory}
-                                                onChange={handleCategoryChange}
+                                                onChange={(e) => handleCategoryChange(e.target.value)}
                                             >
                                                 <option value="">Choose Category</option>
                                                 <option value="Food">Food</option>
@@ -221,13 +219,13 @@ const Supervisor = () => {
 
                         {activeTab === "assign" && (
                             <div className="tab-content">
-                                {assignment && Object.keys(assignment).length > 0? (
+                                {assignments[selectedGrievance.id] && Object.keys(assignments[selectedGrievance.id]).length > 0? (
                                     <div className='assign-container'>
                                     <table className="table">
                                         <tbody>
-                                            <tr><td><strong>Assignment ID:</strong></td><td>{assignment.assignmentId}</td></tr>
-                                            <tr><td><strong>Grievance ID:</strong></td><td>{assignment.grievanceId}</td></tr>
-                                            <tr><td><strong>Supervisor ID:</strong></td><td>{assignment.supervisorId}</td></tr>
+                                            <tr><td><strong>Assignment ID:</strong></td><td>{assignments[selectedGrievance.id].assignmentId}</td></tr>
+                                            <tr><td><strong>Grievance ID:</strong></td><td>{assignments[selectedGrievance.id].grievanceId}</td></tr>
+                                            <tr><td><strong>Supervisor ID:</strong></td><td>{assignments[selectedGrievance.id].supervisorId}</td></tr>
                                             <tr><td><strong>Assignee ID:</strong></td>
                                                     <td>
                                                         {isEditingAssignee ? (
@@ -244,7 +242,7 @@ const Supervisor = () => {
                                                             </>
                                                         ) : (
                                                             <>
-                                                                {assignment.assigneeId}
+                                                                {assignments[selectedGrievance.id].assigneeId}
                                                                 <img src={edit} 
                                                                 alt="edit" 
                                                                 onClick={() => setIsEditingAssignee(true)} 

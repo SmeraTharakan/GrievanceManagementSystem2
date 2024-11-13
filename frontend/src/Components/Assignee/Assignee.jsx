@@ -79,7 +79,6 @@ const Assignee = () => {
                                         value={grievance.status}
                                         onChange={(e) => handleStatusChange(grievance.id, e.target.value)}
                                     >
-                                        <option value="Grievance submitted">Grievance Submitted</option>
                                         <option value="Grievance assigned">Grievance assigned</option>
                                         <option value="Grievance resolved">Grievance resolved</option>
                                     </select>
