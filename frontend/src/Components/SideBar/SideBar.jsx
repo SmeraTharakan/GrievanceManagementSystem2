@@ -24,7 +24,7 @@ const SideBar = () => {
         <li><Link to="/profile">Profile</Link></li>
         <li><Link to="/grievance">Grievances</Link></li>
         {user.role === 'ASSIGNEE' && (
-          <li><Link to="/assign">Assignments</Link></li>
+          <li><Link to="/assignment">Assignments</Link></li>
         )}
         {user.role === 'SUPERVISOR' && (
           <li><Link to="/assign">Assign Grievances</Link></li>

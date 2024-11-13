@@ -9,6 +9,7 @@ import SideBar from './Components/SideBar/SideBar.jsx'
 import Profile from './Components/Profile/Profile.jsx'
 import Grievance from './Components/Grievance/Grievance.jsx'
 import Supervisor from './Components/Supervisor/Supervisor.jsx'
+import Assignee from './Components/Assignee/Assignee.jsx'
 import {useAuth} from './Auth/AuthProvider.jsx';
 import React, { useState } from 'react';
 
@@ -32,6 +33,7 @@ function App() {
           <Route path="/grievance" element={<Grievance />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/assign" element={<Supervisor />} />
+          <Route path="/assignment" element={<Assignee />} />
         </Routes>
       
     </>
