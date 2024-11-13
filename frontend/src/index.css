@@ -57,12 +57,12 @@ p{
 
 body button {
   border: 1px solid transparent;
-  border-radius: 50px;
-  width: 250px;
-  height: 59px;
-  padding: 0.6em 1.2em;
+  border-radius: 20px;
+  padding: 0.4em 1.7em;
   font-size: 19px;
-  font-weight: 700;
+  font-weight: 500;
+  max-width: 250px;
+  min-width: 180px;
   font-family: inherit;
   background-color: #af44f2;
   color: #fff;

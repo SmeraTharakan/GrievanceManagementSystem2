@@ -4,6 +4,7 @@ import api from '../../Api/api.jsx';
 import './Supervisor.css'
 import edit from '../../assets/edit.png';
 import tick from '../../assets/tick.png';
+import empty from '../../assets/empty.png';
 
 const Supervisor = () => {
     const userId = localStorage.getItem("userId");
@@ -121,6 +122,8 @@ const Supervisor = () => {
 
   return (
     <div className='container' >
+        {grievances.length > 0 ? (
+        <>
         <div className='line'>
                 <h2>Assign Grievances</h2>
         </div>
@@ -155,6 +158,15 @@ const Supervisor = () => {
 
             </tbody>
         </table>
+        </>
+        ) : (
+          <div className='empty-container'>
+            <img 
+            src={empty}
+            style={{width: '100px', height:'100px', margin:'30px 0'}}/>
+            <p>No Grievances to assign</p>
+          </div>
+        )}
         {selectedGrievance && (
                 <div className="details-overlay">
                     <div className="details-content" onClick={(e) => e.stopPropagation()}>

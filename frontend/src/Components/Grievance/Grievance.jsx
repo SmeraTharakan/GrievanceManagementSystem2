@@ -5,6 +5,7 @@ import './Grievance.css'
 import bin from '../../assets/bin.png';
 import edit from '../../assets/edit.png';
 import add from '../../assets/add.png';
+import empty from '../../assets/empty.png';
 
 const Grievance = () => {
     const userId = localStorage.getItem("userId");
@@ -90,6 +91,8 @@ const Grievance = () => {
 
   return (
     <div className='container' >
+      {grievances.length > 0 ? (
+        <>
         <div className='line'>
                 <h2>Grievances</h2>
                 <img src={add} alt="Add"  onClick={toggleAdd} style={{ cursor: 'pointer', width: '33px' }}/>
@@ -138,6 +141,16 @@ const Grievance = () => {
 
             </tbody>
         </table>
+        </>
+        ) : (
+          <div className='empty-container'>
+            <img 
+            src={empty}
+            style={{width: '100px', height:'100px', margin:'30px 0'}}/>
+            <p>No Grievances yet</p>
+            <button onClick={toggleAdd}>Add Grievance</button>
+          </div>
+        )}
         {showAddModel && (
         <div className="overlay">
           <div className="content">

@@ -21,11 +21,13 @@ const NavBar = ({toggleSidebar}) => {
             <div className='icon'>
             {isLoggedIn && (
             <>
+            <ul>
               <li>
                 <button className="hamburger-icon" onClick={toggleSidebar}>
                   ☰
                 </button>
               </li>
+            </ul>
             </>)}
                 <img src={Logo} className='logo'/>
                 <div className='gms'>GMS</div>

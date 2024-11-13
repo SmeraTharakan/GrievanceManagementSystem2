@@ -13,7 +13,7 @@ const Profile = () => {
         email: '',
     });
 
-    const [editingField, setEditingField] = useState(null); 
+    const [isEditingField, setIsEditingField] = useState(false); 
     const [newUsername, setNewUsername] = useState('');
     const [refresh, setRefresh] = useState(false);
 
@@ -35,12 +35,6 @@ const Profile = () => {
         fetchUserDetails();
     }, [userId,refresh]);
 
-    const toggleEdit = (field) => {
-        setEditingField(field);
-        if (field === 'username') setNewUsername(userDetails.username);
-        if (field === 'password') setNewPassword(userDetails.password);
-    };
-
     const saveUsername = async () => {
         try {
 
@@ -50,9 +44,9 @@ const Profile = () => {
             
             console.log(`Successfully updated username:`, response.data);
             setRefresh(!refresh);
-            setEditingField(null);
+            setIsEditingField(false);
         } catch (error) {
-            console.error(`Error updating ${field}:`, error);
+            console.error(`Error updating :`, error);
         }
     };
 
@@ -82,40 +76,52 @@ const Profile = () => {
             <div className="profile-container" >
                 <h2>Profile</h2>
                 <div className="profile-detail">
-                    <p><strong>User ID :</strong>{userId}</p>
-                    <p><strong>Email :</strong> {userDetails.email}</p>
-
-                    <div className="editable-field">
-                        <label><strong>Username :</strong></label>
-                        {editingField === 'username' ? (
-                            <span>
-                                <input
-                                    type="text"
-                                    value={newUsername}
-                                    onChange={(e) => setNewUsername(e.target.value)}
-                                    style={{ marginRight: '10px' }}
-                                />
-                                <img
-                                    src={tick}
-                                    alt="Save"
-                                    onClick={() => saveUsername()}
-                                    style={{ cursor: 'pointer', width: '20px' }}
-                                />
-                            </span>
-                        ) : (
-                            <span>
-                                {userDetails.username}
-                                <img
-                                    src={edit}
-                                    alt="Edit"
-                                    onClick={() => toggleEdit('username')}
-                                    style={{ cursor: 'pointer', marginLeft: '10px', width: '20px' }}
-                                />
-                            </span>
-                        )}
-                    </div>
+                    <table className='table'>
+                        <tbody>
+                            <tr>
+                                <td><strong>User ID :</strong></td>
+                                <td>{userId}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Email :</strong></td>
+                                <td>{userDetails.email}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Username :</strong></td>
+                                <td>
+                                    {isEditingField ? (
+                                        <>
+                                            <input
+                                                type="text"
+                                                value={newUsername}
+                                                onChange={(e) => setNewUsername(e.target.value)}
+                                                style={{ marginRight: '10px' }}
+                                            />
+                                            <img
+                                                src={tick}
+                                                alt="Save"
+                                                onClick={() => saveUsername()}
+                                                style={{ cursor: 'pointer', width: '20px' }}
+                                            />
+                                        </>
+                                    ) : (
+                                        <>
+                                            {userDetails.username}
+                                            <img
+                                                src={edit}
+                                                alt="Edit"
+                                                onClick={() => setIsEditingField(true)}
+                                                style={{ cursor: 'pointer', marginLeft: '40px', width: '20px' }}
+                                            />
+                                        </>
+                                    )}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <button onClick={() => setShowPasswordModal(true)}>Change Password</button>
-                    {showPasswordModal && (
+                </div>
+                {showPasswordModal && (
                         <div className="profile-overlay">
                             <div className="profile-content">
                             <div onClick={() => setShowPasswordModal(false)} className='close'>X</div>
@@ -155,10 +161,7 @@ const Profile = () => {
                                 <button className="reset-btn" onClick={handlePasswordReset}>Reset Password</button>
                             </div>
                         </div>
-                    )}
-
-                
-                </div>
+                )}  
             </div>
         </div>
     );

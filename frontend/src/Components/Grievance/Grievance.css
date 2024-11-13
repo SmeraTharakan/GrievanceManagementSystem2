@@ -60,4 +60,11 @@
   margin: 20px 0;
 }
 
+.empty-container{
+  margin-top: 50px;
+  display: block;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
 

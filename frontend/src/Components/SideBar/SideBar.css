@@ -1,38 +1,120 @@
-/* Sidebar.css */
+/*
 .sidebar {
-  position: absolute; /* Position it relative to the page or a parent container */
-  top: 100px; /* Adjust this value to match the height of the navbar */
+  position: absolute; 
+  top: 100px; 
   left: 0;
-  width: 200px; /* Adjust the width as needed */
-  height: calc(100% - 60px); /* Take up the full height of the viewport minus the navbar height */
+  width: 200px; 
+  height: calc(100% - 100px); 
   background-color: #fff;
   padding: 10px;
   box-shadow: 2px 0 5px rgba(0,0,0,0.5);
-  z-index: 1000; /* Ensure it appears above other content */
+  z-index: 1000; 
 }
   
-  .sidebar ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .sidebar ul li {
-    margin: 10px 0;
-  }
-  
-  .sidebar ul li a, .logout-btn {
-    text-decoration: none;
-    color: #333;
-    padding: 10px;
-    display: block;
-    text-align: center;
-    width: 100%;
-    border: none;
-    background: none;
-    cursor: pointer;
-  }
-  
-  .logout-btn {
-    color: #ff4d4f;
-  }
-  
+.sidebar ul {
+  margin-top: 50px;
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 10px 0;
+}
+
+.sidebar ul li a, .logout-btn {
+  text-decoration: none;
+  color: #333;
+  font-size: 18px;
+  padding: 10px;
+  display: block;
+  text-align: center;
+  width: 100%;
+  border: none;
+  background: none;
+}
+
+.sidebar ul li a :hover{
+  cursor: pointer;
+  font-weight: bolder;
+
+}
+
+.logout-btn {
+  color: #ff4d4f;
+  font-weight: bold;
+}
+*/
+.sidebar {
+  position: absolute; 
+  top: 100px; 
+  left: 0;
+  width: 200px; 
+  height: calc(100% - 100px); 
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+  z-index: 1000; 
+}
+
+.sidebar ul {
+  margin-top: 50px;
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 10px 0;
+  transition: all 0.3s ease; /* Smooth animation for size change */
+}
+
+.sidebar ul li a, .logout-btn {
+  text-decoration: none;
+  color: #333;
+  font-size: 18px;
+  padding: 10px;
+  display: block;
+  text-align: center;
+  width: 100%;
+  border: none;
+  background: none;
+  position: relative;
+}
+
+/* Hover effect to grow and change color */
+.sidebar ul li a:hover {
+  cursor: pointer;
+  color: #af44f2; /* Change color on hover */
+  font-weight: bolder;
+  transform: scale(1.05); /* Slightly enlarge */
+}
+
+/* Active page indicator */
+.sidebar ul li.active a {
+  font-weight: bold;
+  color: #af44f2;
+}
+
+.sidebar ul li.active a::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: #af44f2;
+  border-radius: 2px;
+  transition: all 0.3s ease; 
+}
+
+.logout-btn {
+  color: #ff4d4f;
+  font-weight: bold;
+}
+
+.logout-btn:hover{
+  cursor: pointer;
+  transform: scale(1.10); 
+  cursor: pointer;
+}
+
+

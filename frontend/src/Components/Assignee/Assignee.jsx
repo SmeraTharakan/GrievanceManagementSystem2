@@ -2,6 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import api from '../../Api/api.jsx';
 import './Assignee.css'
+import empty from '../../assets/empty.png';
 
 const Assignee = () => {
 
@@ -52,6 +53,8 @@ const Assignee = () => {
 
     return (
         <div className="container">
+            {grievances.length > 0 ? (
+            <>
             <div className='line'>
                 <h2>Assigned Grievances</h2>
             </div>
@@ -93,6 +96,15 @@ const Assignee = () => {
                     )}
                 </tbody>
             </table>
+            </>
+            ) : (
+            <div className='empty-container'>
+                <img 
+                src={empty}
+                style={{width: '100px', height:'100px', margin:'30px 0'}}/>
+                <p>No Grievances assigned</p>
+            </div>
+            )}
         </div>
     )
 }
