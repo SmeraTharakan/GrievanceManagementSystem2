@@ -38,6 +38,16 @@ const SideBar = () => {
             <Link to="/assign">Assign Grievances</Link>
           </li>
         )}
+        {user.role === 'ADMIN' && (
+          <li className={location.pathname === "/assign" ? "active" : ""}>
+            <Link to="/assign">Grievances and Assignments</Link>
+          </li>
+        )}
+        {user.role === 'ADMIN' && (
+          <li className={location.pathname === "/users" ? "active" : ""}>
+            <Link to="/users">Users</Link>
+          </li>
+        )}
         <li>
           <div onClick={handleLogout} className="logout-btn">Logout</div>
         </li>
