@@ -16,6 +16,8 @@ const Grievance = () => {
     const [description, setDescription] = useState('');
     const [gId,setGId] =useState();
     const [refresh, setRefresh] = useState(false);
+    const [categoryFilter, setCategoryFilter] = useState("");
+    const [statusFilter, setStatusFilter] = useState("");
 
     const listGrievance = ()=> api.get(`api/grievances/user/${userId}`);
     useEffect(()=> {
@@ -89,59 +91,82 @@ const Grievance = () => {
         setGId(grievance.id);
     };
 
+    const filteredGrievances = grievances.filter(grievance => {
+      return (
+          (categoryFilter === "" || grievance.category === categoryFilter) &&
+          (statusFilter === "" || grievance.status === statusFilter)
+      );
+    });
+
   return (
     <div className='container' >
-      {grievances.length > 0 ? (
-        <>
         <div className='line'>
                 <h2>Grievances</h2>
                 <img src={add} alt="Add"  onClick={toggleAdd} style={{ cursor: 'pointer', width: '33px' }}/>
         </div>
-        <table className='table table-bordered table-hover' >
-            <thead>
-                <tr className="table-secondary">
-                    <th>id</th>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Category</th>
-                    <th>UserId</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                    
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    grievances.map (grievance =>
-                        <tr key={grievance.id}>
-                            <td >{grievance.id}</td>
-                            <td>{grievance.title}</td>
-                            <td>{grievance.description}</td>
-                            <td>{grievance.category}</td>
-                            <td>{grievance.userId}</td>
-                            <td>{grievance.status}</td>
-                            <td>
-                                <img
-                                    src={edit}
-                                    alt="Update"
-                                    onClick={() => openEditModal(grievance)}
-                                    style={{ cursor: 'pointer', width: '20px', marginRight: '7px' }}
-                                />
-                                <img
-                                    src={bin}
-                                    alt="Delete"
-                                    onClick={() => handleDelete(grievance.id)}
-                                    style={{ cursor: 'pointer', width: '20px' }}
-                                />
-                            </td>
-                            
-                        </tr>
-                    )
-                }
+        <div className="filters">
+                <label style={{ fontSize: '20px',marginRight: '50px' }}>Filter By</label>
+                <label>Category:</label>
+                <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
+                    <option value="">All Categories</option>
+                    <option value="Food">Food</option>
+                    <option value="Facilities">Facilities</option>
+                    <option value="Safety">Safety</option>
+                </select>
 
-            </tbody>
-        </table>
-        </>
+                <label>Status:</label>
+                <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+                    <option value="">All Grievances</option>
+                    <option value="Grievance submitted">Grievance submitted</option>
+                    <option value="Grievance assigned">Grievance assigned</option>
+                    <option value="Grievance resolved">Grievance resolved</option>
+                </select>
+        </div>
+        {filteredGrievances.length > 0 ? (
+              <table className='table table-bordered table-hover' >
+                  <thead>
+                      <tr className="table-secondary">
+                          <th>id</th>
+                          <th>Title</th>
+                          <th>Description</th>
+                          <th>Category</th>
+                          <th>UserId</th>
+                          <th>Status</th>
+                          <th>Action</th>
+                          
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {
+                          filteredGrievances.map (grievance =>
+                              <tr key={grievance.id}>
+                                  <td >{grievance.id}</td>
+                                  <td>{grievance.title}</td>
+                                  <td>{grievance.description}</td>
+                                  <td>{grievance.category}</td>
+                                  <td>{grievance.userId}</td>
+                                  <td>{grievance.status}</td>
+                                  <td>
+                                      <img
+                                          src={edit}
+                                          alt="Update"
+                                          onClick={() => openEditModal(grievance)}
+                                          style={{ cursor: 'pointer', width: '20px', marginRight: '7px' }}
+                                      />
+                                      <img
+                                          src={bin}
+                                          alt="Delete"
+                                          onClick={() => handleDelete(grievance.id)}
+                                          style={{ cursor: 'pointer', width: '20px' }}
+                                      />
+                                  </td>
+                                  
+                              </tr>
+                          )
+                      }
+
+                  </tbody>
+              </table>
         ) : (
           <div className='empty-container'>
             <img 

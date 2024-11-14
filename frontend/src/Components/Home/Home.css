@@ -1,21 +1,21 @@
-#welcome-container {
-    height: 728px;
+.welcome-container {
+    margin-top: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#img-home {
+.img-home {
     width: 654px;
     height: 480px;
 }
-#welcome {
+.welcome {
     margin-left: 250px;
     width: 600px;
     text-align: center;
 
 }
 
-#signup {
+.signup {
     margin-top: 50px;
 }

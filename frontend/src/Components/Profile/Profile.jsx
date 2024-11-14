@@ -74,7 +74,9 @@ const Profile = () => {
     return (
         <div className='fbox'>
             <div className="profile-container" >
+                <div className='line'>
                 <h2>Profile</h2>
+                </div>
                 <div className="profile-detail">
                     <table className='table'>
                         <tbody>

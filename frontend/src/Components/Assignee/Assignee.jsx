@@ -9,6 +9,8 @@ const Assignee = () => {
     const userId = localStorage.getItem("userId");
     const [assignments, setAssignments] = useState([]);
     const [grievances, setGrievances] = useState([]);
+    const [categoryFilter, setCategoryFilter] = useState("");
+    const [statusFilter, setStatusFilter] = useState("");
 
     useEffect(() => {
         const fetchAssignments = async () => {
@@ -51,57 +53,74 @@ const Assignee = () => {
         }
     };
 
+    const filteredGrievances = grievances.filter(grievance => {
+        return (
+            (categoryFilter === "" || grievance.category === categoryFilter) &&
+            (statusFilter === "" || grievance.status === statusFilter)
+        );
+    });
+
     return (
         <div className="container">
-            {grievances.length > 0 ? (
-            <>
             <div className='line'>
                 <h2>Assigned Grievances</h2>
             </div>
-            <table className="table table-bordered table-hover">
-                <thead>
-                    <tr className="table-secondary">
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Category</th>
-                        <th>Status</th>
-                        <th>Assigned By</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {grievances.length > 0 ? (
-                        grievances.map((grievance) => (
-                            <tr key={grievance.id}>
-                                <td>{grievance.id}</td>
-                                <td>{grievance.title}</td>
-                                <td>{grievance.description}</td>
-                                <td>{grievance.category}</td>
-                                <td>
-                                    <select
-                                        value={grievance.status}
-                                        onChange={(e) => handleStatusChange(grievance.id, e.target.value)}
-                                    >
-                                        <option value="Grievance assigned">Grievance assigned</option>
-                                        <option value="Grievance resolved">Grievance resolved</option>
-                                    </select>
-                                </td>
-                                <td>{assignments.find(a => a.grievanceId === grievance.id)?.supervisorId}</td>
-                            </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="6">No grievances assigned.</td>
+            <div className="filters">
+                <label style={{ fontSize: '20px',marginRight: '50px' }}>Filter By</label>
+                <label>Category:</label>
+                <select value={categoryFilter} onChange={(e) => setCategoryFilter(e.target.value)}>
+                    <option value="">All Categories</option>
+                    <option value="Food">Food</option>
+                    <option value="Facilities">Facilities</option>
+                    <option value="Safety">Safety</option>
+                </select>
+
+                <label>Status:</label>
+                <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
+                    <option value="">All Grievances</option>
+                    <option value="Grievance submitted">Grievance submitted</option>
+                    <option value="Grievance assigned">Grievance assigned</option>
+                    <option value="Grievance resolved">Grievance resolved</option>
+                </select>
+            </div>
+            {filteredGrievances.length > 0 ? (
+                <table className="table table-bordered table-hover">
+                    <thead>
+                        <tr className="table-secondary">
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Assigned By</th>
                         </tr>
-                    )}
-                </tbody>
-            </table>
-            </>
+                    </thead>
+                    <tbody>
+                        {filteredGrievances.map((grievance) => (
+                                <tr key={grievance.id}>
+                                    <td>{grievance.id}</td>
+                                    <td>{grievance.title}</td>
+                                    <td>{grievance.description}</td>
+                                    <td>{grievance.category}</td>
+                                    <td>
+                                        <select
+                                            value={grievance.status}
+                                            onChange={(e) => handleStatusChange(grievance.id, e.target.value)}
+                                        >
+                                            <option value="Grievance assigned">Grievance assigned</option>
+                                            <option value="Grievance resolved">Grievance resolved</option>
+                                        </select>
+                                    </td>
+                                    <td>{assignments.find(a => a.grievanceId === grievance.id)?.supervisorId}</td>
+                                </tr>
+                            ))}
+                    </tbody>
+                </table>
             ) : (
             <div className='empty-container'>
                 <img 
                 src={empty}
-                style={{width: '100px', height:'100px', margin:'30px 0'}}/>
+                style={{width: '100px', height:'100px', margin:'30px 0 60px 0'}}/>
                 <p>No Grievances assigned</p>
             </div>
             )}
