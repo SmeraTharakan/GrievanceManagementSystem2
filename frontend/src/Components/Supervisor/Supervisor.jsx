@@ -42,9 +42,7 @@ const Supervisor = () => {
             for (const grievance of grievances) {
                 try {
                     const response = await api.get(`/api/assignments/grievance/${grievance.id}`);
-                    if (response.data && typeof response.data === 'object' && !Array.isArray(response.data)) {
-                        assignmentsData[grievance.id] = response.data;
-                    }
+                    assignmentsData[grievance.id] = response.data;
                 } catch (error) {
                     console.error(`Error fetching assignment for grievance ID ${grievance.id}:`, error);
                 }
@@ -217,7 +215,7 @@ const Supervisor = () => {
                 </div>
             )}
             {selectedGrievance && (
-                    <div className="details-overlay">
+                    <div className="overlay">
                         <div className="details-content" onClick={(e) => e.stopPropagation()}>
                             <div className="close" onClick={() => setSelectedGrievance(null)}>X</div>
                             <nav className="details-navbar">
@@ -281,7 +279,7 @@ const Supervisor = () => {
                             {activeTab === "assign" && (
                                 <div className="tab-content">
                                     {assignments[selectedGrievance.id] && Object.keys(assignments[selectedGrievance.id]).length > 0? (
-                                        <div className='assign-container'>
+                                        <div className='assignment-content'>
                                         <table className="table">
                                             <tbody>
                                                 <tr><td><strong>Assignment ID:</strong></td><td>{assignments[selectedGrievance.id].assignmentId}</td></tr>

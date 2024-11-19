@@ -178,10 +178,10 @@ const Grievance = () => {
         )}
         {showAddModel && (
         <div className="overlay">
-          <div className="content">
+          <div className="add-content">
           <div onClick={() => setshowAddModel(false)} className='close'>X</div>
             <h3>Add New Grievance</h3>
-            <form className="update"onSubmit={handleAddGrievance}>
+            <form className="add-form"onSubmit={handleAddGrievance}>
               <div>
                 <label>Title:</label>
                 <div>

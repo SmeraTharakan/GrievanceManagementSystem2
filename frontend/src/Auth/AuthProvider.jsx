@@ -14,12 +14,14 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         try {
             const response = await api.post('api/auth/login', { email,password });
-            setIsLoggedIn(true);
+            console.log(response.data);
             const { token, id , username ,role} = response.data;
             localStorage.setItem('jwtToken', token);
             localStorage.setItem('userId', id);
             setUser({ email, id, username,role });
+            setIsLoggedIn(true);
             navigate('/grievance');
+            
         } catch (error) {
             console.error("Login failed:", error);
             throw error;

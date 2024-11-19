@@ -1,13 +1,14 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import api from '../../Api/api';
-import './Users.css'
 import empty from '../../assets/empty.png';
 
 const Users = () => {
 
   const [users,setUsers] =useState([]);
   const [roleFilter, setRoleFilter] = useState("");
+    
+
   const listUsers = ()=> api.get('api/users');
     
   useEffect(()=> {
@@ -18,6 +19,20 @@ const Users = () => {
             console.error(error);
         })
   },[])
+
+  const updateUserRole = async(userId, newRole) => {
+    try {
+        await api.put(`api/users/updateRole/${userId}`,newRole,{
+        headers: { "Content-Type": "text/plain" }
+    });
+        setUsers(users.map(user => 
+            user.id === userId ? { ...user, role: newRole } : user
+        ));
+    } catch (error) {
+        console.error(`Error updating user status for ID ${userId}:`, error);
+    }
+        
+  };
 
   const filteredUsers = users.filter(user => {
     return (
@@ -58,22 +73,32 @@ const Users = () => {
                                   <td >{user.id}</td>
                                   <td>{user.username}</td>
                                   <td>{user.email}</td>
-                                  <td>{user.role}</td>
-                                  
+                                  <td>
+                                    <select
+                                        value={user.role}
+                                        onChange={(e) => updateUserRole(user.id, e.target.value)}
+                                    >
+                                        <option value="USER">USER</option>
+                                        <option value="SUPERVISOR">SUPERVISOR</option>
+                                        <option value="ASSIGNEE">ASSIGNEE</option>
+                                        <option value="ADMIN">ADMIN</option>
+                                    </select>
+                                </td>
                               </tr>
                           )
                       }
 
                   </tbody>
-              </table>
-              ) : (
-                <div className='empty-container'>
-                  <img 
-                  src={empty}
-                  style={{width: '100px', height:'100px', margin:'30px 0'}}/>
-                  <p>No Users in that Role</p>
-                </div>
-              )}
+                </table>
+                ) : (
+                    <div className='empty-container'>
+                    <img 
+                    src={empty}
+                    style={{width: '100px', height:'100px', margin:'30px 0'}}/>
+                    <p>No Users in that Role</p>
+                    </div>
+                )}
+                
     </div>
   )
 }

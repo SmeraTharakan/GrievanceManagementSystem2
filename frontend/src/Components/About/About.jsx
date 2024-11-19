@@ -3,7 +3,7 @@ import './About.css'
 
 const About = () => {
   return (
-    <div className='about'>
+    <div className='about-container'>
       <div className='passage'>
         <h2>What is Grievance Management System?</h2>
         <p>Grievance management is the process of handling, 

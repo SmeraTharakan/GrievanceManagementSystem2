@@ -27,6 +27,7 @@ const Profile = () => {
             try {
                 const response = await api.get(`/api/users/${userId}`);
                 setUserDetails(response.data);
+                setNewUsername(response.data.username)
             } catch (error) {
                 console.error('Error fetching user details:', error);
             }
@@ -72,9 +73,8 @@ const Profile = () => {
     };
 
     return (
-        <div className='fbox'>
-            <div className="profile-container" >
-                <div className='line'>
+            <div className="container profile" >
+                <div className='line profile-head'>
                 <h2>Profile</h2>
                 </div>
                 <div className="profile-detail">
@@ -124,11 +124,11 @@ const Profile = () => {
                     <button onClick={() => setShowPasswordModal(true)}>Change Password</button>
                 </div>
                 {showPasswordModal && (
-                        <div className="profile-overlay">
-                            <div className="profile-content">
+                        <div className="overlay">
+                            <div className="password-content">
                             <div onClick={() => setShowPasswordModal(false)} className='close'>X</div>
                                 <h3>Change Password</h3>
-                                <div className='profile-update'>
+                                <div className='password-update'>
                                     <div>
                                         <label>Current Password:</label>
                                         <div>
@@ -165,7 +165,6 @@ const Profile = () => {
                         </div>
                 )}  
             </div>
-        </div>
     );
 };
 

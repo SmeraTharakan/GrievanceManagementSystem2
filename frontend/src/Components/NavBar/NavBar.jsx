@@ -1,11 +1,17 @@
-import React from 'react'
+import {React,useState} from 'react'
 import Logo from '../../assets/logoGvm.png'
 import { Link } from 'react-router-dom'; 
 import { useAuth } from '../../Auth/AuthProvider';
+import SideBar from '../SideBar/SideBar.jsx'
 import './NavBar.css'
 
-const NavBar = ({toggleSidebar}) => {
+const NavBar = () => {
     const { isLoggedIn ,logout} = useAuth();
+    const [isSidebarVisible, setSidebarVisible] = useState(true); 
+
+    const toggleSidebar = () => {
+        setSidebarVisible(!isSidebarVisible);
+    };
 
     const handleLogout = async () => {
         try {
@@ -15,13 +21,17 @@ const NavBar = ({toggleSidebar}) => {
         }
     };
 
+
     return (
         <div>
             <header className="menu-bar">
-                <div className='left-nav'>
+                <div className="left-nav">
                     {isLoggedIn && (
-                        <div className="hamburger-icon" onClick={toggleSidebar}>
-                        ☰
+                        <div
+                            className='menu-icon'
+                            onClick={toggleSidebar}
+                        >
+                            {isSidebarVisible ? <div className='x-icon'>&#x2715; </div> : <div>&#9776;</div>}
                         </div>
                     )}
                     <div className='icon-logo'>
@@ -41,6 +51,8 @@ const NavBar = ({toggleSidebar}) => {
                 </ul>
                 </div>
             </header>
+            {isLoggedIn && isSidebarVisible && <SideBar/>}
+
         </div>
     )
 }

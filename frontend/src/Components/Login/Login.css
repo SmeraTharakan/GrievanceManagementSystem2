@@ -1,24 +1,13 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    margin: auto;
-    margin-top: 150px;
-    background: #fff;
-    padding: 30px;
-    width: 600px;
-    border-radius: 8px;
-}
 
-.header {
+.login {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 9px;
     width: 100%;
     margin-top: 30px;
 }
 
-.text {
+.login-text {
     font-size: 48px;
     font-weight: 700;
 }
@@ -30,28 +19,28 @@
     border-radius: 9px;
 }
 
-.inputs {
-    margin-top: 55px;
+.input-container {
+    margin: 50px 0;
     display: flex;
     flex-direction: column;
     gap: 25px;
 }
 
-.input {
+.input-field {
     display: flex;
     align-items: center;
     margin: auto;
     width: 480px;
-    height: 80px;
+    height: 75px;
     background: #eaeaea;
     border-radius: 6px;
 }
 
-.input img {
+.input-field img {
     margin: 0px 30px;
 }
 
-.input input {
+.input-field input {
     height: 50px;
     width: 400px;
     background: transparent;
@@ -66,7 +55,6 @@
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    margin: 40px auto;
 }
 
 
@@ -86,22 +74,3 @@
     text-decoration: underline;
 }
 
-/* Responsive adjustments */
-@media (max-width: 640px) {
-    .container {
-        width: 90%;
-        padding: 20px;
-    }
-
-    .input {
-        width: 100%;
-    }
-
-    .input input {
-        width: 90%;
-    }
-
-    .text {
-        font-size: 36px;
-    }
-}

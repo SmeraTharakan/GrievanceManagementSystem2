@@ -1,7 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import api from '../../Api/api.jsx';
-import './Assignee.css'
 import empty from '../../assets/empty.png';
 
 const Assignee = () => {
