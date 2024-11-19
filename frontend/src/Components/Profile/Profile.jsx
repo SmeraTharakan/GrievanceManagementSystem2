@@ -18,6 +18,7 @@ const Profile = () => {
     const [refresh, setRefresh] = useState(false);
 
     const [showPasswordModal, setShowPasswordModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
@@ -72,6 +73,17 @@ const Profile = () => {
         }
     };
 
+    const handleAccountDeletion = async () => {
+        try {
+            await api.delete(`/api/users/delete/${userId}`);
+            console.log('Account deleted successfully');
+            localStorage.clear();
+            window.location.href = "/login"; 
+        } catch (error) {
+            console.error('Error deleting account:', error);
+        }
+    };
+
     return (
             <div className="container profile" >
                 <div className='line profile-head'>
@@ -122,6 +134,7 @@ const Profile = () => {
                         </tbody>
                     </table>
                     <button onClick={() => setShowPasswordModal(true)}>Change Password</button>
+                    <button className="delete-btn" onClick={() => setShowDeleteModal(true)}>Delete Account</button>
                 </div>
                 {showPasswordModal && (
                         <div className="overlay">
@@ -163,7 +176,19 @@ const Profile = () => {
                                 <button className="reset-btn" onClick={handlePasswordReset}>Reset Password</button>
                             </div>
                         </div>
-                )}  
+                )} 
+                {showDeleteModal && (
+                <div className="overlay">
+                    <div className="delete-content">
+                        <div onClick={() => setShowDeleteModal(false)} className='close'>X</div>
+                        <h3>Are you sure you want to delete your account?</h3>
+                        <div className='sub-can'>
+                            <button onClick={handleAccountDeletion}>Yes, Delete</button>
+                            <button onClick={() => setShowDeleteModal(false)}>Keep account</button>
+                        </div>
+                    </div>
+                </div>
+                )} 
             </div>
     );
 };

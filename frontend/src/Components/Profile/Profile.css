@@ -48,3 +48,14 @@
     margin: 0 auto;
 }
 
+.delete-content {
+    background-color: white;
+    border-radius: 8px;
+    max-width: 550px;
+    width: 100%;
+    height: 260px;
+    position: relative;  
+    padding: 30px;
+    z-index: 1000;
+}
+
