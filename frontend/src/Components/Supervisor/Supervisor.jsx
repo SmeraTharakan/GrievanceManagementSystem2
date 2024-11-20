@@ -9,7 +9,7 @@ import { useAuth } from '../../Auth/AuthProvider';
 
 const Supervisor = () => {
     const userId = localStorage.getItem("userId");
-    const {user} = useAuth();
+    const role = localStorage.getItem('role')
     const [grievances,setGrievances] =useState([]);
     const [assignments, setAssignments] = useState({});
     const [activeTab, setActiveTab] = useState("details");
@@ -122,7 +122,7 @@ const Supervisor = () => {
         }
     };
 
-    const openModal = (grievance) => {
+    const openModel = (grievance) => {
         setSelectedGrievance(grievance);
         setIsEditingAssignee(false);
         setIsEditingSupervisor(false);
@@ -149,7 +149,7 @@ const Supervisor = () => {
   return (
     <div className='container'>
             <div className='line'>
-                <h2>{user.role === 'ADMIN' ? "Grievances and Assignments" : "Assign Grievances"}</h2>
+                <h2>{role === 'ADMIN' ? "Grievances and Assignments" : "Assign Grievances"}</h2>
             </div>
 
             <div className="filters">
@@ -195,7 +195,7 @@ const Supervisor = () => {
                         </thead>
                         <tbody>
                             {filteredGrievances.map(grievance => (
-                                <tr key={grievance.id} onClick={() => openModal(grievance)} style={{ cursor: 'pointer' }}>
+                                <tr key={grievance.id} onClick={() => openModel(grievance)} style={{ cursor: 'pointer' }}>
                                     <td>{grievance.id}</td>
                                     <td>{grievance.title}</td>
                                     <td>{grievance.description}</td>
@@ -216,8 +216,8 @@ const Supervisor = () => {
             )}
             {selectedGrievance && (
                     <div className="overlay">
-                        <div className="details-content" onClick={(e) => e.stopPropagation()}>
-                            <div className="close" onClick={() => setSelectedGrievance(null)}>X</div>
+                        <div className="details-content" >
+                            <div className="close" onClick={() => setSelectedGrievance(null)}>&#x2715;</div>
                             <nav className="details-navbar">
                                 <button
                                     className={activeTab === "details" ? "active" : ""}
@@ -352,8 +352,8 @@ const Supervisor = () => {
                                     )}
                                 </div>
                             )}
+                        </div>
                     </div>
-                </div>
             )}
     </div>
   );

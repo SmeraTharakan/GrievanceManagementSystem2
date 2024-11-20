@@ -7,7 +7,7 @@ import password_icon from '../../assets/password.png';
 import email_icon from '../../assets/email.png';
 
 const Login = () => {
-    const { user,login ,signup} = useAuth();
+    const { login ,signup} = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const [email, setEmail] = useState('');

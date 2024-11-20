@@ -12,6 +12,7 @@ const NavBar = () => {
     const toggleSidebar = () => {
         setSidebarVisible(!isSidebarVisible);
     };
+    console.log(isLoggedIn);
 
     const handleLogout = async () => {
         try {

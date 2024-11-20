@@ -10,8 +10,8 @@ import empty from '../../assets/empty.png';
 const Grievance = () => {
     const userId = localStorage.getItem("userId");
     const [grievances,setGrievances] =useState([])
-    const [showAddModel, setshowAddModel] = useState(false);
-    const [showEditModel, setshowEditModel] = useState(false);
+    const [showAddModel, setShowAddModel] = useState(false);
+    const [showEditModel, setShowEditModel] = useState(false);
     const [title, setTitle] = useState('');        
     const [description, setDescription] = useState('');
     const [gId,setGId] =useState();
@@ -73,21 +73,22 @@ const Grievance = () => {
           console.log('Grievance updated successfully');
 
           setRefresh(!refresh); 
+          setShowEditModel(false);
       } catch (error) {
           console.error('Error updating grievance:', error);
       }
     };
 
     const toggleAdd = () => {
-        setshowAddModel(!showAddModel);
+        setShowAddModel(!showAddModel);
         setTitle('');
         setDescription('');
     };
 
-    const openEditModal = (grievance) => {
+    const openEditModel = (grievance) => {
         setTitle(grievance.title);      
         setDescription(grievance.description); 
-        setshowEditModel(true);
+        setShowEditModel(true);
         setGId(grievance.id);
     };
 
@@ -150,7 +151,7 @@ const Grievance = () => {
                                       <img
                                           src={edit}
                                           alt="Update"
-                                          onClick={() => openEditModal(grievance)}
+                                          onClick={() => openEditModel(grievance)}
                                           style={{ cursor: 'pointer', width: '20px', marginRight: '7px' }}
                                       />
                                       <img
@@ -178,10 +179,10 @@ const Grievance = () => {
         )}
         {showAddModel && (
         <div className="overlay">
-          <div className="add-content">
-          <div onClick={() => setshowAddModel(false)} className='close'>X</div>
+          <div className="add-edit">
+            <div onClick={() => setShowAddModel(false)} className='close'>&#x2715;</div>
             <h3>Add New Grievance</h3>
-            <form className="add-form"onSubmit={handleAddGrievance}>
+            <form className="add-edit-content">
               <div>
                 <label>Title:</label>
                 <div>
@@ -203,20 +204,20 @@ const Grievance = () => {
                 />
                 </div>
               </div>
-              <div className="sub-can">
-                <button type="submit">Submit</button>
-                <button type="button" onClick={toggleAdd}>Cancel</button>
-              </div>
             </form>
+            <div className="bi-button">
+                <button type="submit" onClick={handleAddGrievance}>Submit</button>
+                <button type="button" onClick={toggleAdd}>Cancel</button>
+            </div>
           </div>
         </div>
       )}
       {showEditModel && (
         <div className="overlay">
-            <div className="content">
-            <div onClick={() => setshowEditModel(false)} className='close'>X</div>
+            <div className="add-edit">
+            <div onClick={() => setShowEditModel(false)} className='close'>&#x2715;</div>
               <h3>Edit Grievance</h3>
-              <div className='update'>
+              <div className='add-edit-content'>
                 <div>
                     <label>Title:</label>
                     <div>
@@ -236,11 +237,10 @@ const Grievance = () => {
                     />
                     </div>
                 </div>
-                <div className="sub-can">
+              </div>
+              <div className="bi-button">
                   <button onClick={updateDetails}>Update</button>
-                  <button type="button" onClick={() => setshowEditModel(false)}>Cancel</button>
-                </div>
-                
+                  <button type="button" onClick={() => setShowEditModel(false)}>Cancel</button>
               </div>
             </div>
         </div>

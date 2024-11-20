@@ -15,7 +15,6 @@ import React, { useState } from 'react';
 
 function App() {
 
-  const {isLoggedIn } = useAuth(false);
 
   return (
     <>

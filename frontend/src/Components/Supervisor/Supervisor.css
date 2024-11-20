@@ -2,17 +2,18 @@
 
 .details-content {
     background: #fff;
-    padding: 15px 25px;
+    padding: 50px 30px;
     border-radius: 8px;
     width: 850px;
     height: 450px;
-    border: 2px solid blue;
+    position: relative;
+    z-index: 1000;
 }
 
 .tab-content {
-    width: 95%;
-    height: 300px;
-    margin: 40px auto;
+    width: 87%;
+    height: 260px;
+    margin: 50px auto;
 }
 
 .assignment-content{
@@ -23,7 +24,7 @@
 .details-navbar {
     display: flex;
     justify-content: space-around;
-    margin-bottom: 20px;
+    margin: 0 40px 20px 40px;
     border-bottom: 1px solid #e0e0e0;
 }
 

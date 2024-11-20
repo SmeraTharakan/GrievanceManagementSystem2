@@ -5,8 +5,9 @@ import { useAuth } from '../../Auth/AuthProvider';
 import { Link, useLocation } from 'react-router-dom';
 
 const SideBar = () => {
-  const {logout,user} = useAuth();
+  const {logout} = useAuth();
   const location = useLocation();
+  const role=localStorage.getItem('role');
 
 
   const handleLogout = async () => {
@@ -28,22 +29,22 @@ const SideBar = () => {
         <li className={location.pathname === "/grievance" ? "active" : ""}>
           <Link to="/grievance">Grievances</Link>
         </li>
-        {user.role === 'ASSIGNEE' && (
+        {role === 'ASSIGNEE' && (
           <li className={location.pathname === "/assignment" ? "active" : ""}>
             <Link to="/assignment">Assignments</Link>
           </li>
         )}
-        {user.role === 'SUPERVISOR' && (
+        {role === 'SUPERVISOR' && (
           <li className={location.pathname === "/assign" ? "active" : ""}>
             <Link to="/assign">Assign Grievances</Link>
           </li>
         )}
-        {user.role === 'ADMIN' && (
+        {role === 'ADMIN' && (
           <li className={location.pathname === "/assign" ? "active" : ""}>
             <Link to="/assign">Grievances and Assignments</Link>
           </li>
         )}
-        {user.role === 'ADMIN' && (
+        {role === 'ADMIN' && (
           <li className={location.pathname === "/users" ? "active" : ""}>
             <Link to="/users">Users</Link>
           </li>

@@ -85,11 +85,13 @@ const Profile = () => {
     };
 
     return (
-            <div className="container profile" >
-                <div className='line profile-head'>
+            <div className="container" >
+                <div className='line'>
                 <h2>Profile</h2>
                 </div>
                 <div className="profile-detail">
+                    <h3>Account Info</h3>
+                    <hr />
                     <table className='table'>
                         <tbody>
                             <tr>
@@ -133,13 +135,27 @@ const Profile = () => {
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div className="profile-detail">
+                    <h3>Change Password</h3>
+                    <hr />
+                    <p>Update your password to keep your account secure. Make sure your new password is strong and not easy to guess.</p>
                     <button onClick={() => setShowPasswordModal(true)}>Change Password</button>
+                </div>
+
+                <div className="profile-detail">
+                    <h3>Delete Your Account</h3>
+                    <hr />
+                    <p>
+                        If you choose to delete your account, all your data will be permanently removed, and you will not be able to recover it. 
+                        Please proceed with caution.
+                    </p>
                     <button className="delete-btn" onClick={() => setShowDeleteModal(true)}>Delete Account</button>
                 </div>
                 {showPasswordModal && (
                         <div className="overlay">
                             <div className="password-content">
-                            <div onClick={() => setShowPasswordModal(false)} className='close'>X</div>
+                                <div onClick={() => setShowPasswordModal(false)} className='close'>&#x2715;</div>
                                 <h3>Change Password</h3>
                                 <div className='password-update'>
                                     <div>
@@ -173,16 +189,20 @@ const Profile = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <button className="reset-btn" onClick={handlePasswordReset}>Reset Password</button>
+                                <div className='bi-button'>
+                                    <button onClick={handlePasswordReset}>Reset Password</button>
+                                    <button onClick={() => setShowPasswordModal(false)}>Cancel</button>
+                                </div>
+                                
                             </div>
                         </div>
                 )} 
                 {showDeleteModal && (
                 <div className="overlay">
                     <div className="delete-content">
-                        <div onClick={() => setShowDeleteModal(false)} className='close'>X</div>
-                        <h3>Are you sure you want to delete your account?</h3>
-                        <div className='sub-can'>
+                        <div onClick={() => setShowDeleteModal(false)} className='close'>&#x2715;</div>
+                        <p style={{textAlign: 'center'}}>Are you sure you want to delete your account?</p>
+                        <div className='bi-button'>
                             <button onClick={handleAccountDeletion}>Yes, Delete</button>
                             <button onClick={() => setShowDeleteModal(false)}>Keep account</button>
                         </div>

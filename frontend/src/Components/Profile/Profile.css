@@ -1,37 +1,44 @@
 
-.profile-head{
-    margin-left: 50px;
-    margin-top: 50px ;
-}
-.profile{
-    box-shadow: 0 4px 13px rgba(0, 0, 0, 0.3);
-
-
-}
-
 .profile-detail {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    padding: 0 2rem 3rem 2rem;
-
+    margin-bottom: 40px;
+    padding: 40px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
 }
+
+.profile-detail p {
+    margin-bottom: 30px;
+    font-size: 17px;
+    color: #666;
+}
+
+
 
 .password-content {
     background-color: white;
     border-radius: 8px;
     max-width: 550px;
     width: 100%;
-    height: 420px;
+    height: 430px;
     position: relative;  
-    padding: 30px;
+    padding: 50px 30px;
+    z-index: 1000;
+}
+.delete-content {
+    background-color: white;
+    border-radius: 8px;
+    max-width: 550px;
+    width: 100%;
+    height: 250px;
+    position: relative;  
+    padding: 50px 30px;
     z-index: 1000;
 }
 
-
 .password-update{
     margin: 20px auto;
-    width: 100%;
+    width: 88%;
     height: 200px;
     display: flex;
     flex-direction: column;
@@ -48,14 +55,5 @@
     margin: 0 auto;
 }
 
-.delete-content {
-    background-color: white;
-    border-radius: 8px;
-    max-width: 550px;
-    width: 100%;
-    height: 260px;
-    position: relative;  
-    padding: 30px;
-    z-index: 1000;
-}
+
 

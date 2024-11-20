@@ -1,43 +1,32 @@
 
-.add-content {
+.add-edit {
   background-color: white;
-  padding: 20px;
+  padding: 50px 30px;
   border-radius: 8px;
   max-width: 900px;
   width: 100%;
-  height: 520px;
+  height: 450px;
   position: relative;
   z-index: 1000;
 }
 
-.add-content input,
-.add-content textarea {
+.add-edit input,
+.add-edit textarea {
   width: 100%;
   padding: 10px;
 }
 
-.add-form{
+.add-edit-content{
   margin: 0 auto;
   width: 800px;
-  height: 400px;
+  height: 250px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
 }
 
-.add-form input, 
-.add-form textarea{
-  margin: 20px 0px 0px 30px;
-  width: 90%;
-}
 
-.sub-can{
-  width: 815px;
-  height: auto;
-  display: flex;
-  justify-content: space-around;
-  margin: 20px 0;
-}
+
 
 
 
