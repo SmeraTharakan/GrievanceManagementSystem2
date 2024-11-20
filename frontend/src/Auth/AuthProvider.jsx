@@ -1,16 +1,25 @@
-// src/AuthProvider.jsx
 
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 import api from '../Api/api.jsx'; 
 import { useNavigate } from 'react-router-dom';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+    useEffect(() => {
+        const token = localStorage.getItem('jwtToken');
+        const userId = localStorage.getItem('userId');
+        const role=localStorage.getItem('role')
+
+        if (token && userId && role) {
+            setIsLoggedIn(true);
+        } else {
+            setIsLoggedIn(false);
+        }
+    }, []);
     const login = async (email, password) => {
         try {
             const response = await api.post('api/auth/login', { email,password });
@@ -18,7 +27,7 @@ export const AuthProvider = ({ children }) => {
             const { token, id , username ,role} = response.data;
             localStorage.setItem('jwtToken', token);
             localStorage.setItem('userId', id);
-            setUser({ email, id, username,role });
+            localStorage.setItem('role',role);
             setIsLoggedIn(true);
             navigate('/grievance');
             
@@ -34,7 +43,7 @@ export const AuthProvider = ({ children }) => {
             const { token, id ,role } = response.data;
             localStorage.setItem('jwtToken', token);
             localStorage.setItem('userId', id);
-            setUser({ email, id, username,role});
+            localStorage.setItem('role',role);
             setIsLoggedIn(true);
             navigate('/grievance');
         } catch (error) {
@@ -44,13 +53,14 @@ export const AuthProvider = ({ children }) => {
     };
     const logout = () => {
         localStorage.removeItem('jwtToken');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('role');
         setIsLoggedIn(false);
-        setUser(null);
         navigate('/login');
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, signup, logout, isLoggedIn}}>
+        <AuthContext.Provider value={{ login, signup, logout, isLoggedIn}}>
             {children}
         </AuthContext.Provider>
     );
