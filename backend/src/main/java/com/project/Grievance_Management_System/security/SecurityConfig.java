@@ -32,6 +32,9 @@ public class SecurityConfig {
     @Autowired
     private MyUserDetailsService userDetailsService;
 
+    @Autowired
+    private JwtAuthEntryPoint authEntryPoint;
+
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception{
         http
@@ -42,7 +45,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .formLogin(formLogin -> formLogin.disable())
-            .httpBasic(httpBasic -> httpBasic.disable())
+            .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(authEntryPoint))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         
