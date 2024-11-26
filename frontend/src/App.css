@@ -81,8 +81,8 @@
 .filters select:focus,
 .filters input[type="text"]:focus {
   outline: none;
-  border-color: #007bff;
-  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+  border-color: #d6bffe;
+  box-shadow: 0px 0px 5px rgba(156, 97, 223, 0.5);
 }
 
 .empty-container{

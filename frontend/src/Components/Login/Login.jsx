@@ -26,7 +26,6 @@ const Login = () => {
     const handleLogin = async (e) => {
         try {
             await login(email, password);
-            console.log("Success");
         } catch (error) {
             setError("Invalid credentials. Please try again.");
             console.error(error)

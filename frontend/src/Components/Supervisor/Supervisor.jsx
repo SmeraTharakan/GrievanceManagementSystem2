@@ -113,7 +113,9 @@ const Supervisor = () => {
     const deleteAssignment = async () => {
         try {
             const response = await api.delete(`/api/assignments/delete/${assignments[selectedGrievance.id].assignmentId}`);
-            console.log("Assignment deleted successfully:", response.data);
+            await api.put(`/api/grievances/updateStatus/${selectedGrievance.id}`, "Grievance submitted" ,{
+                headers: { "Content-Type": "text/plain" }
+            });
 
             setRefresh(!refresh);  
              
@@ -127,7 +129,7 @@ const Supervisor = () => {
         setIsEditingAssignee(false);
         setIsEditingSupervisor(false);
         setAssigneeId(assignments[grievance.id]?.assigneeId || "");
-        setAssigneeId(assignments[grievance.id]?.SupervisorId || "");
+        setSupervisorId(assignments[grievance.id]?.supervisorId || "");
         if(grievance.category){
             setSelectedCategory(grievance.category)
         }
@@ -160,6 +162,8 @@ const Supervisor = () => {
                     <option value="Food">Food</option>
                     <option value="Facilities">Facilities</option>
                     <option value="Safety">Safety</option>
+                    <option value="Technical">Technical</option>
+                    <option value="Other">Other</option>
                 </select>
 
                 <label>User ID:</label>
@@ -260,6 +264,8 @@ const Supervisor = () => {
                                                     <option value="Food">Food</option>
                                                     <option value="Facilities">Facilities</option>
                                                     <option value="Safety">Safety</option>
+                                                    <option value="Technical">Technical</option>
+                                                    <option value="Other">Other</option>
                                                 </select>
                                                 </td>
                                             </tr>
@@ -286,20 +292,26 @@ const Supervisor = () => {
                                                 <tr><td><strong>Grievance ID:</strong></td><td>{assignments[selectedGrievance.id].grievanceId}</td></tr>
                                                 <tr><td><strong>Supervisor ID:</strong></td>
                                                 <td>
-                                                    {user.role === "ADMIN" && isEditingSupervisor ? (
+                                                    {role === "ADMIN" && isEditingSupervisor ? (
                                                             <>
                                                                 <input
                                                                     type="text"
                                                                     value={supervisorId}
                                                                     onChange={(e) => setSupervisorId(e.target.value)}
                                                                 />
-                                                                <img src={tick} alt="confirm" onClick={updateSupervisorId} style={{ cursor: 'pointer', marginLeft: '10px', width: '20px' }} />
+                                                                <img src={tick} 
+                                                                alt="confirm" 
+                                                                onClick={updateSupervisorId} 
+                                                                style={{ cursor: 'pointer', marginLeft: '10px', width: '20px' }} />
                                                             </>
                                                         ) : (
                                                             <>
                                                                 {assignments[selectedGrievance.id].supervisorId}
-                                                                {user.role === "ADMIN" && (
-                                                                    <img src={edit} alt="edit" onClick={() => setIsEditingSupervisor(true)} style={{ cursor: 'pointer', marginLeft: '50px', width: '20px' }} />
+                                                                {role === "ADMIN" && (
+                                                                    <img src={edit} 
+                                                                    alt="edit" 
+                                                                    onClick={() => setIsEditingSupervisor(true)} 
+                                                                    style={{ cursor: 'pointer', marginLeft: '50px', width: '20px' }} />
                                                                 )}
                                                             </>
                                                         )}
@@ -307,7 +319,7 @@ const Supervisor = () => {
                                                 </td></tr>
                                                 <tr><td><strong>Assignee ID:</strong></td>
                                                         <td>
-                                                            {isEditingAssignee ? (
+                                                            {role === "SUPERVISOR" && isEditingAssignee ? (
                                                                 <>
                                                                     <input
                                                                         type="text"
@@ -322,10 +334,12 @@ const Supervisor = () => {
                                                             ) : (
                                                                 <>
                                                                     {assignments[selectedGrievance.id].assigneeId}
-                                                                    <img src={edit} 
-                                                                    alt="edit" 
-                                                                    onClick={() => setIsEditingAssignee(true)} 
-                                                                    style={{ cursor: 'pointer', marginLeft: '50px', width: '20px' }} />
+                                                                    {role === "SUPERVISOR" &&(
+                                                                        <img src={edit} 
+                                                                        alt="edit" 
+                                                                        onClick={() => setIsEditingAssignee(true)} 
+                                                                        style={{ cursor: 'pointer', marginLeft: '50px', width: '20px' }} />
+                                                                    )}
                                                                 </>
                                                             )}
                                                         </td>

@@ -163,8 +163,11 @@ const Profile = () => {
                                         <div>
                                         <input
                                             type="password"
+                                            name="myInput1"
+                                            id="myInput1"
                                             value={currentPassword}
                                             onChange={(e) => setCurrentPassword(e.target.value)}
+                                            autoComplete="current-password"
                                         />
                                         </div>
                                     </div>
@@ -173,8 +176,11 @@ const Profile = () => {
                                         <div>
                                         <input
                                             type="password"
+                                            name="myInput2"
+                                            id="myInput2"
                                             value={newPassword}
                                             onChange={(e) => setNewPassword(e.target.value)}
+                                            autoComplete="none"
                                         />
                                         </div>
                                     </div>
@@ -183,8 +189,11 @@ const Profile = () => {
                                         <div>
                                         <input
                                             type="password"
+                                            name="myInput3"
+                                            id="myInput3"
                                             value={confirmNewPassword}
                                             onChange={(e) => setConfirmNewPassword(e.target.value)}
+                                            autoComplete="none"
                                         />
                                         </div>
                                     </div>

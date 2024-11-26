@@ -72,6 +72,8 @@ const Assignee = () => {
                     <option value="Food">Food</option>
                     <option value="Facilities">Facilities</option>
                     <option value="Safety">Safety</option>
+                    <option value="Technical">Technical</option>
+                    <option value="Other">Other</option>
                 </select>
 
                 <label>Status:</label>

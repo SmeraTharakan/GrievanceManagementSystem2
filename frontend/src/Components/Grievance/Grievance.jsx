@@ -23,7 +23,6 @@ const Grievance = () => {
     useEffect(()=> {
         listGrievance().then((response) =>{
             setGrievances(response.data || [])
-            console.log(response.data)
         }).catch(error => {
             console.error(error);
         })
@@ -33,7 +32,6 @@ const Grievance = () => {
     const handleDelete = async (id) => {
       try {
         const response = await api.delete(`/api/grievances/delete/${id}`,);
-        console.log('Grievance deleted successfully',response.data);
 
         setRefresh(!refresh);
     } catch (error) {
@@ -52,7 +50,6 @@ const Grievance = () => {
 
       try {
           const response = await api.post('/api/grievances/create', grievanceData);
-          console.log('Grievance created successfully:', response.data);
           toggleAdd();
 
           setRefresh(!refresh);
@@ -69,8 +66,6 @@ const Grievance = () => {
     };
       try {
           const response = await api.put(`/api/grievances/updateDetails/${gId}`,updateDetails);
-
-          console.log('Grievance updated successfully');
 
           setRefresh(!refresh); 
           setShowEditModel(false);
@@ -113,6 +108,8 @@ const Grievance = () => {
                     <option value="Food">Food</option>
                     <option value="Facilities">Facilities</option>
                     <option value="Safety">Safety</option>
+                    <option value="Technical">Technical</option>
+                    <option value="Other">Other</option>
                 </select>
 
                 <label>Status:</label>
@@ -131,7 +128,6 @@ const Grievance = () => {
                           <th>Title</th>
                           <th>Description</th>
                           <th>Category</th>
-                          <th>UserId</th>
                           <th>Status</th>
                           <th>Action</th>
                           
@@ -145,7 +141,6 @@ const Grievance = () => {
                                   <td>{grievance.title}</td>
                                   <td>{grievance.description}</td>
                                   <td>{grievance.category}</td>
-                                  <td>{grievance.userId}</td>
                                   <td>{grievance.status}</td>
                                   <td>
                                       <img

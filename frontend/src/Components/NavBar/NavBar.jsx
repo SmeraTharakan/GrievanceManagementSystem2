@@ -1,6 +1,6 @@
 import {React,useState} from 'react'
 import Logo from '../../assets/logoGvm.png'
-import { Link } from 'react-router-dom'; 
+import { Link ,useLocation} from 'react-router-dom'; 
 import { useAuth } from '../../Auth/AuthProvider';
 import SideBar from '../SideBar/SideBar.jsx'
 import './NavBar.css'
@@ -8,11 +8,11 @@ import './NavBar.css'
 const NavBar = () => {
     const { isLoggedIn ,logout} = useAuth();
     const [isSidebarVisible, setSidebarVisible] = useState(true); 
+    const location = useLocation();
 
     const toggleSidebar = () => {
         setSidebarVisible(!isSidebarVisible);
     };
-    console.log(isLoggedIn);
 
     const handleLogout = async () => {
         try {
@@ -42,12 +42,28 @@ const NavBar = () => {
                 </div>
                 <div className='right-nav'>
                 <ul>
-                    <li><Link to="/">Home</Link></li>
-                    <li><Link to="/about">About</Link></li>
+                    <li>
+                        <Link to="/" className={location.pathname === "/" ? "active" : ""}>
+                            Home
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/about" className={location.pathname === "/about" ? "active" : ""}>
+                            About
+                        </Link>
+                    </li>
                     {isLoggedIn ? (
-                        <li><a href="#" onClick={handleLogout}>Logout</a></li>
+                        <li>
+                            <a href="#" onClick={handleLogout}>
+                                Logout
+                            </a>
+                        </li>
                     ) : (
-                        <li><Link to="/login?action=login">Login</Link></li>
+                        <li>
+                            <Link to="/login?action=login" className={location.pathname.includes("/login")? "active" : ""}>
+                                Login   
+                            </Link>
+                        </li>
                     )}
                 </ul>
                 </div>
