@@ -1,4 +1,4 @@
 
 # Project Overview
  
-The Grievance Management System will consist of three main roles: User, Supervisor, and Assignee. Each role will have specific views and data flows to facilitate the efficient handling of grievances.
+Grievance Management System is an application designed to streamline the process of submitting, assigning, and updating grievances within an organization.Developed using Spring Boot (backend), React (frontend), and PostgreSQL (database), the system provides role-based access and functionality for three main user roles: User, Supervisor, and Assignee. Each role has specific views and workflows tailored to its needs, ensuring efficient grievance resolution.
